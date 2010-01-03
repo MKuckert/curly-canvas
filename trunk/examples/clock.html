@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Clock</title>
+		<script type="text/javascript" src="../build/ext-core.js"></script>
+		<script type="text/javascript" src="../build/dist-min.js"></script>
+		<script type="text/javascript" src="Clock.js"></script>
+		<!--[if IE]><script type="text/javascript" src="../build/excanvas.js"></script><![endif]-->
+	</head>
+	<body>
+		<canvas id="c" width="300" height="150"></canvas>
+		<script type="text/javascript">//<![CDATA[
+window.onload = function() {
+	var el=document.getElementById('c');
+	canvas=new Curly.Canvas(el);
+	el.style.border='1px solid #AAA';
+	el.style.position='absolute';
+	el.style.left='50%';
+	el.style.top='50%';
+	el.style.marginLeft=-(canvas.getWidth()>>1)+'px';
+	el.style.marginTop=-(canvas.getHeight()>>1)+'px';
+	
+	var clock=new Curly.Clock({
+		canvas:	canvas,
+		x:		canvas.getWidth()/2,
+		y:		canvas.getHeight()/2,
+		size:	35
+	});
+}
+//		]]></script>
+	</body>
+</html>
