@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project name="BuildCanvas" default="dist" basedir=".">
+	<!-- Einstellungen laden -->
+	<property file="./build.properties" />
+
+	<!-- Eigene Tasks laden -->
+	<taskdef classname="phing.jsMinTask" name="jsmin" classpath="." />
+
+	<!-- Buildverzeichnis aufräumen -->
+	<target name="clean">
+		<echo msg="Cleaning up" />
+		<delete dir="${build.directory}" includeemptydirs="true" />
+	</target>
+	
+	<!-- Buildverzeichnis vorbereiten -->
+	<target name="prepare-builddir" depends="clean">
+		<echo msg="Making directory ${build.directory}" />
+		<mkdir dir="${build.directory}" />
+	</target>
+
+<!-- JS -->
+	<!-- Mergt alle JS-Dateien -->
+	<target name="build-js" depends="prepare-builddir">
+		<echo msg="Merging JavaScript sources" />
+		<append destFile="${build.jsdist}">
+			<filelist dir="${source.js.directory}" listfile="${source.js.filelist}" />
+		</append>
+		<copy file="${source.js.directory}/excanvas/excanvas.compiled.js" tofile="${build.directory}/excanvas.js" />
+		<copy file="${source.js.directory}/ext-core/ext-core.js" tofile="${build.directory}/ext-core.js" />
+	</target>
+	
+	<!-- Minifiziert die Ergebnisdatei -->
+	<target name="build-js-min" depends="build-js">
+		<echo msg="Minifying JavaScript sources" />
+		<jsmin targetdir="." jsminpath="${jsmin.path}">
+			<fileset dir=".">
+				<include name="${build.jsdist}" />
+			</fileset>
+		</jsmin>
+	</target>
+	
+<!-- BUILD -->
+	<!-- Distributions-Build -->
+	<target name="dist" depends="build-js-min">
+		<echo msg="Build distribution file ready" />
+	</target>
+</project>

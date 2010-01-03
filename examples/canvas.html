@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Canvas</title>
+		<script type="text/javascript" src="../build/ext-core.js"></script>
+		<script type="text/javascript" src="../build/dist.js"></script>
+		<!--[if IE]><script type="text/javascript" src="../build/excanvas.js"></script><![endif]-->
+	</head>
+	<body>
+		<canvas id="c" width="300" height="150"></canvas>
+		<script type="text/javascript">//<![CDATA[
+var canvas, ctx;
+window.onload = function() {
+try {
+	var el=document.getElementById('c');
+	canvas=new Curly.Canvas(el);
+	el.style.border='1px solid #AAA';
+	el.style.position='absolute';
+	el.style.left='50%';
+	el.style.marginLeft=-(canvas.getWidth()>>1)+'px';
+	el.style.marginTop=canvas.getHeight()+'px';
+
+	// Test
+	var rect=new Curly.Rectangle(10, 10, 30, 30);
+	canvas.draw(rect);
+
+	rect.moveTo(20, 20);
+	canvas.overwriteState({
+		fillStyle:		Curly.Transparent,
+		strokeStyle:	'red'
+	}).draw(rect);
+
+	var arc=new Curly.Arc(35, 35, 15);
+	canvas.overwriteState({
+		fillStyle:		'blue',
+		strokeStyle:	Curly.Transparent
+	}).draw(arc);
+
+	canvas.pushState(new Curly.Canvas.State()).applyState();
+
+	var path=new Curly.StatefulPath();
+	path.drawFill=false;
+	path.moveTo(10, 100).
+		lineTo(100, 50).
+		setState(new Curly.Canvas.State({strokeStyle: 'red'})).
+		lineTo(200, 110).
+		setState(new Curly.Canvas.State({strokeStyle: 'green'})).
+		arc(20, 0, Math.PI).
+		lineTo(250, 10).
+		moveTo(90, 90).
+		dot();
+	canvas.draw(path);
+
+	canvas.overwriteState({
+		strokeStyle: '#FF00FF'
+	}).draw(new Curly.BezierLine(0, 0, 300, 0, 0, 150, 300, 150));
+	
+	canvas.
+		//clear().
+		path(150, 70).
+		quadCurve(0, 0, 50, 70).
+		draw(false);
+
+	canvas.overwriteState({fillStyle: new Curly.Gradient.Radial({
+		stops: [
+			{offset: 0, color: 'red'},
+			{offset: 1, color: 'blue'}
+		],
+		x0: 20,
+		y0: 90,
+		x1: 20,
+		y1: 90
+	})});
+	canvas.draw(new Curly.Arc(40, 110, 30));
+
+	var g=new Curly.Gradient.Linear({
+		stops: [
+			{offset: 0, color: 'red'},
+			{offset: 0.5, color: 'orange'},
+			{offset: 1, color: 'blue'}
+		],
+		x0:        100,
+		y0:        110,
+		x1:        130,
+		y1:        110
+	});
+	canvas.overwriteState({fillStyle: g});
+	canvas.draw(new Curly.Rectangle(100, 60, 30, 30));
+
+	g.positionLine(30, Math.PI*0.25);
+	canvas.draw(new Curly.Rectangle(100, 100, 30, 30));
+
+	canvas.overwriteState({
+		fillStyle: Curly.Transparent,
+		strokeStyle: 'red',
+		lineWidth: 5,
+		lineCap: Curly.Canvas.State.CAP_ROUND
+	}).
+		draw(new Curly.QuadCurve(290, 10, 10, 10, 150, 200))
+	
+	canvas.
+		clear().
+		draw(new Curly.Smiley());
+	
+	canvas.pushDefaultState().applyState();
+	
+	ctx=canvas.getCtx()
+}
+catch(e) {
+	console.log(e);
+}
+}
+//		]]></script>
+	</body>
+</html>
