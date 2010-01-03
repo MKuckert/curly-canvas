@@ -1,0 +1,4 @@
+Curly.Path.containsPoint
+Curly.Canvas.Pattern
+createImageData
+drawImage
