@@ -3,9 +3,6 @@
 	<!-- Einstellungen laden -->
 	<property file="./build.properties" />
 
-	<!-- Eigene Tasks laden -->
-	<taskdef classname="phing.jsMinTask" name="jsmin" classpath="." />
-
 	<!-- Buildverzeichnis aufräumen -->
 	<target name="clean">
 		<echo msg="Cleaning up" />
@@ -32,7 +29,7 @@
 	<!-- Minifiziert die Ergebnisdatei -->
 	<target name="build-js-min" depends="build-js">
 		<echo msg="Minifying JavaScript sources" />
-		<jsmin targetdir="." jsminpath="${jsmin.path}">
+		<jsmin targetdir=".">
 			<fileset dir=".">
 				<include name="${build.jsdist}" />
 			</fileset>

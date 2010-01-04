@@ -14,6 +14,7 @@ Ext.extend(Ext.ux.Canvas, Ext.BoxComponent, {
 		}
 		
 		this.ctx=new Curly.Canvas(this.el.dom);
+		this.ctx.setDimensions([this.width, this.height]);
 		
 		Ext.ux.Canvas.superclass.afterRender.apply(this, arguments);
 	}

@@ -237,11 +237,14 @@ Curly.Canvas=function(source) {
 		var w=dim[0], h=dim[1];
 		
 		// Aktuelle Bilddaten sichern
-		var data=ctx.getImageData(
-			0, 0,
-			Math.min(this.getWidth(), w),
-			Math.min(this.getHeight(), h)
-		);
+		var data=null;
+		if(ctx.getImageData) {
+			data=ctx.getImageData(
+				0, 0,
+				Math.min(this.getWidth(), w),
+				Math.min(this.getHeight(), h)
+			);
+		}
 		
 		// Canvas vergrößern
 		Ext.fly(ctx.canvas).set({
@@ -250,7 +253,9 @@ Curly.Canvas=function(source) {
 		});
 		
 		// Bilddaten zurückschreiben
-		ctx.putImageData(data, 0, 0);
+		if(data) {
+			ctx.putImageData(data, 0, 0);
+		}
 		
 		return this;
 	}

@@ -1,3 +1,4 @@
+
 var Curly={}
 Array.prototype.clone=function(){var clone=[];for(var i=0;i<this.length;i++){if(this[i]instanceof Array){clone.push(this[i].clone());}
 else{clone.push(this[i]);}}
@@ -22,7 +23,9 @@ this.setWidth=function(v){return this.setDimensions([v,this.getHeight()]);}
 this.getHeight=function(){return ctx.canvas.height;}
 this.setHeight=function(v){return this.setDimensions([this.getWidth(),v]);}
 this.getDimensions=function(){return[this.getWidth(),this.getHeight()];}
-this.setDimensions=function(dim){var w=dim[0],h=dim[1];var data=ctx.getImageData(0,0,Math.min(this.getWidth(),w),Math.min(this.getHeight(),h));Ext.fly(ctx.canvas).set({width:w,height:h});ctx.putImageData(data,0,0);return this;}
+this.setDimensions=function(dim){var w=dim[0],h=dim[1];var data=null;if(ctx.getImageData){data=ctx.getImageData(0,0,Math.min(this.getWidth(),w),Math.min(this.getHeight(),h));}
+Ext.fly(ctx.canvas).set({width:w,height:h});if(data){ctx.putImageData(data,0,0);}
+return this;}
 this.globalToLocalX=function(x){return x-Ext.fly(this.getElement()).getX();}
 this.globalToLocalY=function(y){return y-Ext.fly(this.getElement()).getY();}
 this.globalToLocal=function(ar){return[this.globalToLocalX(ar[0]),this.globalToLocalY(ar[1])];}
