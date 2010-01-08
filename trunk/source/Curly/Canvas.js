@@ -5,7 +5,7 @@
  * @constructor
  * @param HtmlElement|CanvasRenderingContext2D
  * 
- * Stellt Methoden für den Zugriff auf einen Canvas-Renderingcontext bereit.
+ * Provides methods to work with a canvas 2d rendering context
  * @link http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#canvasrenderingcontext2d
  */
 Curly.Canvas=function(source) {
@@ -16,23 +16,20 @@ Curly.Canvas=function(source) {
 	var stateStack=[];
 	
 	/**
-	 * Gibt die Canvas-Renderingcontext-Instanz zurück.
+	 * Returns the rendering context.
 	 * 
 	 * @return CanvasRenderingContext2D
 	 * @internal
 	 */
 	this.getCtx=function() {
 		return ctx;
-	}
+	};
 	
 	if(typeof source=='string') {
 		source=document.getElementById(source);
 		if(!source) {
 			throw new Curly.Canvas.Error('The given argument is no valid element id');
 		}
-	}
-	else if(source instanceof Ext.Element) {
-		source=source.dom;
 	}
 	
 	if(source instanceof CanvasRenderingContext2D) {
@@ -45,6 +42,7 @@ Curly.Canvas=function(source) {
 		throw new Curly.Canvas.Error('The given argument is no valid parameter');
 	}
 	
+	// TODO: Refactor Canvas::addEvents
 	this.addEvents({
 		/**
 		 * @event beforedraw
@@ -61,32 +59,29 @@ Curly.Canvas=function(source) {
 	});
 	
 	/**
-	 * @var float Korrekturverschiebung in X-Richtung, die für jeden Zustand
-	 * hinzugefügt wird. Diese Verschiebung wird für Linien mit einer Dicke von
-	 * einem Pixel benötigt, damit diese während des Zeichnens auf einer
-	 * Koordinate mit ganzzahligem Wert scharf gerendert wird.
+	 * @var float Correcting for the x coordinate. Is applied to every canvas state.
+	 * This Correction is required for lines with a line thickness of one pixel so the
+	 * drawing operation is not blured by the antialiasing.
 	 */
 	this.xCorrection=0.5;
 	
 	/**
-	 * @var float Korrekturverschiebung in Y-Richtung, die für jeden Zustand
-	 * hinzugefügt wird.
+	 * @var float Correcting for the y coordinate.
 	 */
 	this.yCorrection=0.5;
 	
 	/**
-	 * @var boolean Flag, ob die Korrekturverschiebung angewendet werden soll.
+	 * @var boolean Flag if the coordinate correction should be applied.
 	 */
 	this.useCorrection=true;
 	
 	/**
-	 * @var boolean Flag, ob die Korrekturverschiebung nur mit
-	 *  Integerwerten angewendet werden soll.
+	 * @var boolean Flag if the coordinate correction should only use integer values.
 	 */
 	this.useIntCorrection=false;
 	
 	/**
-	 * Gibt den Zeichenstil zu dem übergebenen Objekt zurück.
+	 * Returns the drawing style to the given object.
 	 * 
 	 * @return Object
 	 * @param Object
@@ -98,10 +93,10 @@ Curly.Canvas=function(source) {
 		else {
 			return o;
 		}
-	}
+	};
 	
 	/**
-	 * Überträgt die Daten des aktuellen Zustands auf das Canvas-Objekt.
+	 * Applies the current state to the canvas.
 	 * 
 	 * @private
 	 */
@@ -115,9 +110,9 @@ Curly.Canvas=function(source) {
 			s=stateStack[stateStack.length-1];
 		}
 		
-		// Transformation anwenden oder zurücksetzen
+		// Apply or reset transformation
 		var t=s.transform;
-		if(!Ext.isArray(t) || t.length<6) {
+		if(!(t instanceof Array) || t.length<6) {
 			t=Curly.Canvas.State.IDENTITY_MATRIX;
 		}
 		ctx.setTransform(t[0], t[1], t[2], t[3], t[4], t[5]);
@@ -156,66 +151,66 @@ Curly.Canvas=function(source) {
 		//font;
 		//textAlign;
 		//textBaseline;
-	}
+	};
 	
 	/**
-	 * Gibt das HtmlElement-Objekt zu dem Canvas zurück.
+	 * Returns the HtmlElement object to the canvas
 	 * 
 	 * @return HtmlElement
 	 */
 	this.getElement=function() {
 		return ctx.canvas;
-	}
+	};
 	
 	/**
-	 * Gibt die Breite des Canvas zurück.
+	 * Returns the width of the canvas.
 	 * 
 	 * @return integer
 	 */
 	this.getWidth=function() {
 		return ctx.canvas.width;
-	}
+	};
 	
 	/**
-	 * Setzt die Breite des Canvas.
+	 * Sets the width of the canvas.
 	 * 
 	 * @return Curly.Canvas
 	 * @param integer
 	 */
 	this.setWidth=function(v) {
 		return this.setDimensions([v, this.getHeight()]);
-	}
+	};
 	
 	/**
-	 * Gibt die Höhe des Canvas zurück.
+	 * Returns the height of the canvas.
 	 * 
 	 * @return integer
 	 */
 	this.getHeight=function() {
 		return ctx.canvas.height;
-	}
+	};
 	
 	/**
-	 * Setzt die Höhe des Canvas.
+	 * Sets the height of the canvas.
 	 * 
 	 * @return Curly.Canvas
 	 * @param integer
 	 */
 	this.setHeight=function(v) {
 		return this.setDimensions([this.getWidth(), v]);
-	}
+	};
 	
 	/**
-	 * Gibt die Dimensionen des Canvas als Array zurück.
+	 * Returns the dimensions of the canvas as an array.
 	 * 
 	 * @return Array
 	 */
 	this.getDimensions=function() {
 		return [this.getWidth(), this.getHeight()];
-	}
+	};
 	
 	/**
-	 * Setzt die Dimensionen des Canvas als Array.
+	 * Sets the dimensions of the canvas with an array as value.
 	 * 
 	 * @return Curly.Canvas
 	 * @param Array
@@ -223,7 +218,7 @@ Curly.Canvas=function(source) {
 	this.setDimensions=function(dim) {
 		var w=dim[0], h=dim[1];
 		
-		// Aktuelle Bilddaten sichern
+		// Store current image data, if available
 		var data=null;
 		if(ctx.getImageData) {
 			data=ctx.getImageData(
@@ -232,47 +227,47 @@ Curly.Canvas=function(source) {
 				Math.min(this.getHeight(), h)
 			);
 		}
-		
-		// Canvas vergrößern
+
+		// Resize the canvas
+		// TODO: Remove Ext.fly
 		Ext.fly(ctx.canvas).set({
 			width:		w,
 			height:		h
 		});
 		
-		// Bilddaten zurückschreiben
+		// Restore stored image data, if available
 		if(data) {
 			ctx.putImageData(data, 0, 0);
 		}
 		
 		return this;
-	}
+	};
 	
-	// Aufrufe optimieren: XY-Cache und auf move-Event reagieren?
+	// TODO: Improve call: XY-Cache and move-Event
 	/**
-	 * Konvertiert die übergebene globale X-Koordinate in das lokale
-	 * Koordinatensystem.
+	 * Converts the given global x coordinate into the local coordinate system.
 	 * 
 	 * @return integer
 	 * @param integer
 	 */
 	this.globalToLocalX=function(x) {
+		// TODO: Remove Ext.fly
 		return x-Ext.fly(this.getElement()).getX();
-	}
+	};
 	
 	/**
-	 * Konvertiert die übergebene globale Y-Koordinate in das lokale
-	 * Koordinatensystem.
+	 * Converts the given global y coordinate into the local coordinate system.
 	 * 
 	 * @return integer
 	 * @param integer
 	 */
 	this.globalToLocalY=function(y) {
+		// TODO: Remove Ext.fly
 		return y-Ext.fly(this.getElement()).getY();
-	}
+	};
 	
 	/**
-	 * Konvertiert die übergebene globale Koordinate in das lokale
-	 * Koordinatensystem.
+	 * Converts the given global coordinate into the local coordinate system.
 	 * 
 	 * @return Array
 	 * @param Array
@@ -282,33 +277,32 @@ Curly.Canvas=function(source) {
 			this.globalToLocalX(ar[0]),
 			this.globalToLocalY(ar[1])
 		];
-	}
+	};
 	
 	/**
-	 * Konvertiert die übergebene lokale X-Koordinate in das globale
-	 * Koordinatensystem.
+	 * Converts the given local x coordinate into the global coordinate system.
 	 * 
 	 * @return integer
 	 * @param integer
 	 */
 	this.localToGlobalX=function(x) {
+		// TODO: Remove Ext.fly
 		return x+Ext.fly(this.getElement()).getX();
-	}
+	};
 	
 	/**
-	 * Konvertiert die übergebene lokale Y-Koordinate in das globale
-	 * Koordinatensystem.
+	 * Converts the given local y coordinate into the global coordinate system.
 	 * 
 	 * @return integer
 	 * @param integer
 	 */
 	this.localToGlobalY=function(y) {
+		// TODO: Remove Ext.fly
 		return y+Ext.fly(this.getElement()).getY();
-	}
+	};
 	
 	/**
-	 * Konvertiert die übergebene lokale Koordinate in das globale
-	 * Koordinatensystem.
+	 * Converts the given local coordinate into the global coordinate system.
 	 * 
 	 * @return Array
 	 * @param Array
@@ -318,12 +312,12 @@ Curly.Canvas=function(source) {
 			this.localToGlobalX(ar[0]),
 			this.localToGlobalY(ar[1])
 		];
-	}
+	};
 	
 	/**
-	 * Gibt den auf dem Zustandsstapel höchsten Zustand zurück.
+	 * Returns the current state.
 	 * 
-	 * @return Curly.Canvas.State oder undefined
+	 * @return Curly.Canvas.State or undefined
 	 */
 	this.getState=function() {
 		if(stateStack.length<=0) {
@@ -332,10 +326,10 @@ Curly.Canvas=function(source) {
 		else {
 			return stateStack[stateStack.length-1];
 		}
-	}
+	};
 	
 	/**
-	 * Fügt dem Zustandsstapel den übergebenen Zustand hinzu.
+	 * Adds the given state to the state stack.
 	 * 
 	 * @return Curly.Canvas
 	 * @param Curly.Canvas.State
@@ -343,20 +337,19 @@ Curly.Canvas=function(source) {
 	this.pushState=function(state) {
 		stateStack.push(state);
 		return this;
-	}
+	};
 	
 	/**
-	 * Entfernt den obersten Zustand vom Zustandsstapel.
+	 * Removes the current state from the state stack.
 	 * 
-	 * @return Curly.Canvas.State oder undefined wenn der Stapel leer ist.
+	 * @return Curly.Canvas.State or undefined if the stack is empty.
 	 */
 	this.popState=function() {
 		return stateStack.pop();
-	}
+	};
 	
 	/**
-	 * Entfernt die obersten i Zustände vom Zustandsstapel. Wird kein Parameter
-	 * übergeben, werden alle Zustände entfernt.
+	 * Removes the top i states from the state stack. If no parameter is given the stack will be completely flushed.
 	 * 
 	 * @return Curly.Canvas
 	 * @param integer
@@ -370,31 +363,31 @@ Curly.Canvas=function(source) {
 		}
 		
 		return this;
-	}
+	};
 	
 	/**
-	 * Fügt dem Zustandsstapel einen neuen Standard-Zustand hinzu.
+	 * Adds a default state to the state stack.
 	 * 
 	 * @return Curly.Canvas
 	 * @param Curly.Canvas.State
 	 */
 	this.pushDefaultState=function() {
 		return this.pushState(new Curly.Canvas.State());
-	}
+	};
 	
 	/**
-	 * Setzt den aktuellen Zustand auf den obersten Zustand vom Zustandsstapel.
+	 * Applies the topmost state of the state stack to the canvas.
 	 * 
 	 * @return Curly.Canvas
 	 */
 	this.applyState=function() {
 		setState();
 		return this;
-	}
+	};
 	
 	/**
-	 * Dupliziert den aktuellen Zustand, nimmt die übergebenen Änderungen vor
-	 * und fügt diesen anschließend dem Zustandsstapel hinzu.
+	 * Duplicates the current state and applies the given changes to it. After
+	 * that the resulting state is added to the state stack.
 	 * 
 	 * @return Curly.Canvas
 	 * @param Object|String
@@ -402,24 +395,29 @@ Curly.Canvas=function(source) {
 	 */
 	this.overwriteState=function(changes) {
 		if(typeof changes=='string') {
-			var tmp={}
+			var tmp={};
 			tmp[changes]=arguments[1];
 			changes=tmp;
 		}
-		var state=Ext.apply({}, changes, this.getState());
-		state=new Curly.Canvas.State(state);
-		this.pushState(state);
+		
+		var state={};
+		var currentState=this.getState();
+		if(currentState!=undefined) {
+			Curly.extend(state, currentState[i]);
+		}
+		
+		this.pushState(new Curly.Canvas.State(Curly.extend(state, changes)));
 		return this;
-	}
+	};
 	
 	/**
-	 * Gibt die Bilddaten dieser Zeichenfläche als ImageData-Objekt zurück.
+	 * Gibt die Bilddaten dieser Zeichenflï¿½che als ImageData-Objekt zurï¿½ck.
 	 * 
 	 * @return ImageData
-	 * @param integer X-Koordinate für die Bilddatenrückgabe.
-	 * @param integer Y-Koordinate für die Bilddatenrückgabe.
-	 * @param integer Breite der Bilddatenrückgabe.
-	 * @param integer Höhe der Bilddatenrückgabe.
+	 * @param integer X-Koordinate fï¿½r die Bilddatenrï¿½ckgabe.
+	 * @param integer Y-Koordinate fï¿½r die Bilddatenrï¿½ckgabe.
+	 * @param integer Breite der Bilddatenrï¿½ckgabe.
+	 * @param integer Hï¿½he der Bilddatenrï¿½ckgabe.
 	 */
 	this.getImageData=function(x, y, w, h) {
 		if(x===undefined) {
@@ -436,25 +434,25 @@ Curly.Canvas=function(source) {
 		}
 		
 		return ctx.getImageData(x, y, w, h);
-	}
+	};
 	
 	/**
-	 * Zeichnet das übergebene Element auf dieses Canvas-Element.
+	 * Zeichnet das ï¿½bergebene Element auf dieses Canvas-Element.
 	 * 
 	 * @return void
 	 * @param HtmlImageElement|HtmlCanvasElement|HtmlVideoElement
 	 * @param integer Quell-Breite
-	 * @param integer Quell-Höhe
+	 * @param integer Quell-Hï¿½he
 	 * @param integer Quell-X-Koordinate
 	 * @param integer Quell-Y-Koordinate
 	 * @param integer Ziel-X-Koordinate
 	 * @param integer Ziel-Y-Koordinate
 	 * @param integer Ziel-Breite
-	 * @param integer Ziel-Höhe
+	 * @param integer Ziel-Hï¿½he
 	 * @internal
 	 */
 	this.drawImage=function(el, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
-		// Nur Integer-Transformation vornehmen, damit es zu keinen unschönen Verschiebungen kommt
+		// Nur Integer-Transformation vornehmen, damit es zu keinen unschï¿½nen Verschiebungen kommt
 		var tmp=this.useIntCorrection;
 		this.useIntCorrection=true;
 		this.applyState();
@@ -463,10 +461,10 @@ Curly.Canvas=function(source) {
 		
 		this.useIntCorrection=tmp;
 		this.applyState();
-	}
+	};
 	
 	/**
-	 * Kopiert die übergebenen Bilddaten in dieses Bild.
+	 * Kopiert die ï¿½bergebenen Bilddaten in dieses Bild.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas
@@ -476,7 +474,7 @@ Curly.Canvas=function(source) {
 	 * @param integer Quell-X-Koordinate
 	 * @param integer Quell-Y-Koordinate
 	 * @param integer Quell-Breite
-	 * @param integer Quell-Höhe
+	 * @param integer Quell-Hï¿½he
 	 */
 	this.copy=function(data, dstX, dstY, srcX, srcY, srcW, srcH) {
 		// Standardparameter setzen
@@ -506,16 +504,15 @@ Curly.Canvas=function(source) {
 			}
 			else {
 				el=data;
-				var fly=Ext.fly(el);
-				elW=fly.getWidth();
-				elH=fly.getHeight();
+				elW=el.offsetWidth;
+				elH=el.offsetHeight;
 			}
 			
 			if(srcW===undefined) {
 				srcW=elW ? elW : el.width;
 			}
 			if(srcH===undefined) {
-				srcH=elH ? elH : el.height
+				srcH=elH ? elH : el.height;
 			}
 			
 			this.drawImage(
@@ -524,7 +521,7 @@ Curly.Canvas=function(source) {
 				dstX, dstY, srcW, srcH
 			);
 		}
-		// ImageData: Maximalgröße validieren
+		// ImageData: Validate maximal width
 		else {
 			if(data.width>this.getWidth()+dstX) {
 				throw new Curly.Canvas.Error('The width attribute of the given ImageData is too big');
@@ -537,10 +534,10 @@ Curly.Canvas=function(source) {
 		}
 		
 		return this;
-	}
+	};
 	
 	/**
-	 * Kopiert die übergebenen Bilddaten skaliert in dieses Bild.
+	 * Kopiert die ï¿½bergebenen Bilddaten skaliert in dieses Bild.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas
@@ -550,9 +547,9 @@ Curly.Canvas=function(source) {
 	 * @param integer Quell-X-Koordinate
 	 * @param integer Quell-Y-Koordinate
 	 * @param integer Ziel-Breite
-	 * @param integer Ziel-Höhe
+	 * @param integer Ziel-Hï¿½he
 	 * @param integer Quell-Breite
-	 * @param integer Quell-Höhe
+	 * @param integer Quell-Hï¿½he
 	 */
 	this.copyResized=function(data, dstX, dstY, srcX, srcY, dstW, dstH, srcW, srcH) {
 		// Standardparameter setzen
@@ -586,7 +583,7 @@ Curly.Canvas=function(source) {
 			srcW=el.width;
 		}
 		if(srcH===undefined) {
-			srcH=el.height
+			srcH=el.height;
 		}
 		
 		this.drawImage(
@@ -596,7 +593,7 @@ Curly.Canvas=function(source) {
 		);
 		
 		return this;
-	}
+	};
 	
 	/**
 	 * Verwirft alle gezeichneten Daten dieses Canvas.
@@ -612,36 +609,36 @@ Curly.Canvas=function(source) {
 		this.useCorrection=tmp;
 		
 		return this;
-	}
+	};
 	
 	/**
 	 * Erstellt ein neues Pfad-Objekt.
 	 * 
 	 * @return Curly.Path
-	 * @param integer X-Position für den Startpunkt des Pfades
-	 * @param integer X-Position für den Endpunkt des Pfades
+	 * @param integer X-Position fï¿½r den Startpunkt des Pfades
+	 * @param integer X-Position fï¿½r den Endpunkt des Pfades
 	 */
 	this.path=function(x, y) {
 		var p=new Curly.Path(x, y);
 		p.canvas=this;
 		return p;
-	}
+	};
 	
 	/**
-	 * Erstellt ein neues zustandsänderndes Pfad-Objekt.
+	 * Erstellt ein neues zustandsï¿½nderndes Pfad-Objekt.
 	 * 
 	 * @return Curly.StatefulPath
-	 * @param integer X-Position für den Startpunkt des Pfades
-	 * @param integer X-Position für den Endpunkt des Pfades
+	 * @param integer X-Position fï¿½r den Startpunkt des Pfades
+	 * @param integer X-Position fï¿½r den Endpunkt des Pfades
 	 */
 	this.statefulPath=function(x, y) {
 		var p=new Curly.StatefulPath(x, y);
 		p.canvas=this;
 		return p;
-	}
+	};
 	
 	/**
-	 * Zeichnet das übergebene Objekt auf dieses Canvas-Objekt.
+	 * Zeichnet das ï¿½bergebene Objekt auf dieses Canvas-Objekt.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas
@@ -663,10 +660,10 @@ Curly.Canvas=function(source) {
 		this.fireEvent('afterdraw', drawable, this);
 		
 		return this;
-	}
+	};
 	
 	/**
-	 * Setzt Clipping Region auf die übergebene Shape-Instanz.
+	 * Setzt Clipping Region auf die ï¿½bergebene Shape-Instanz.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas
@@ -694,7 +691,7 @@ Curly.Canvas=function(source) {
 			shape=shape.getPath(this);
 		}
 		
-		shape.draw(false, false);	// false für Zeichnen ohne Füllung und Rahmen
+		shape.draw(false, false);	// false fï¿½r Zeichnen ohne Fï¿½llung und Rahmen
 		ctx.clip();
 		
 		this.useCorrection=tmp;
@@ -703,7 +700,7 @@ Curly.Canvas=function(source) {
 		this.fireEvent('afterclip', shape, this);
 		
 		return this;
-	}
+	};
 	
 	/**
 	 * Weitet Clipping Region auf das gesamte Canvas-Objekt aus.
@@ -713,8 +710,7 @@ Curly.Canvas=function(source) {
 	 */
 	this.unclip=function() {
 		return this.clip(new Curly.Rectangle(0, 0, this.getWidth(), this.getHeight()));
-	}
+	};
 	
 	this.pushDefaultState();
-}
-Ext.extend(Curly.Canvas, Ext.util.Observable);
+};

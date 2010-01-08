@@ -1,38 +1,39 @@
 /**
- * Stellt einen zu Objektpfad dar.
+ * Represents a drawing path. All operations performed with this path are
+ * buffered. Use the draw method to draw the path to a canvas object.
  * 
  * @class Curly.Path
  * @extends Curly.Shape
  */
 /**
  * @constructor
- * @param integer X-Position des Startpunktes
- * @param integer Y-Position des Startpunktes
+ * @param integer X coordinate of the start point
+ * @param integer Y coordinate of the start point
  */
 Curly.Path=function(x, y) {
 	Curly.Path.superclass.constructor.call(this, x, y);
 	this.comp=[['beginPath']];
 	this.pushPosition();
-}
-Ext.extend(Curly.Path, Curly.Shape, {
+};
+Curly.extendClass(Curly.Path, Curly.Shape, {
 	/**
-	 * @var Curly.Canvas Mit diesem Pfad referenziertes Canvas-Objekt
+	 * @var Curly.Canvas The referenced canvas object of this path
 	 */
 	canvas: null,
 	/**
-	 * @var integer Die letzte gespeicherte X-Position dieses Objektes.
+	 * @var integer The last stored X coordinate of this object
 	 */
 	lastX: -1,
 	/**
-	 * @var integer Die letzte gespeicherte X-Position dieses Objektes.
+	 * @var integer The last stored Y coordinate of this object
 	 */
 	lastY: -1,
 	/**
-	 * @var array Aktions-Stack dieses Pfades
+	 * @var array Action stack of this path
 	 */
 	comp: null,
 	/**
-	 * Schließt den aktuellen Pfad.
+	 * Closes the current path
 	 * 
 	 * @return Curly.Path
 	 */
@@ -41,11 +42,10 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	},
 	/**
-	 * Fügt die aktuelle Position auf den Objekt-Stack, wenn sich diese von der
-	 * letzten gespeicherten Position unterscheidet.
+	 * Adds the current position to the action stack if it's different to the last stored position.
 	 * 
 	 * @return Curly.Path
-	 * @param boolean Flag, um eine Speicherung zu provozieren
+	 * @param boolean Path true to force a save operation
 	 */
 	pushPosition: function(forceSave) {
 		if(this.lastX!=this.x || this.lastY!=this.y || forceSave) {
@@ -56,11 +56,11 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	},
 	/**
-	 * Setzt die aktuelle X- und Y-Position dieses Objektes.
+	 * Sets the current x and y coordinates for this object.
 	 * 
 	 * @return Curly.Path
-	 * @param integer X-Position
-	 * @param integer Y-Position
+	 * @param integer X coordinate
+	 * @param integer Y coordinate
 	 */
 	moveTo: function(x, y) {
 		Curly.Path.superclass.moveTo.call(this, x ,y);
@@ -68,23 +68,22 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	},
 	/**
-	 * Setzt die aktuelle X- und Y-Position dieses Objektes ohne dies auf den
-	 * Pfadstack zu legen.
+	 * Sets the current x and y coordinates for this object without adding it to the action stack
 	 * 
 	 * @return Curly.Path
-	 * @param integer X-Position
-	 * @param integer Y-Position
+	 * @param integer X coordinate
+	 * @param integer Y coordinate
 	 */
 	setPosition: function(x, y) {
 		Curly.Path.superclass.moveTo.call(this, x ,y);
 		return this;
 	},
 	/**
-	 * Zeichnet eine Linie zu der übergebenen Position.
+	 * Draws a line to the given position.
 	 * 
 	 * @return Curly.Path
-	 * @param float X-Position des Zielpunktes
-	 * @param float Y-Position des Zielpunktes
+	 * @param float X coordinate of the end point
+	 * @param float Y coordinate of the end point
 	 */
 	lineTo: function(x, y) {
 		//this.pushPosition();
@@ -93,11 +92,11 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	},
 	/**
-	 * Zeichnet ein Rechteck.
+	 * Draws a rectangle.
 	 * 
 	 * @return Curly.Path
-	 * @param integer Breite des Rechtecks.
-	 * @param integer Höhe des Rechtecks.
+	 * @param integer Width of the rectangle
+	 * @param integer Height of the rectangle
 	 */
 	rect: function(w, h) {
 		this.pushPosition();
@@ -105,13 +104,12 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	},
 	/**
-	 * Zeichnet einen Kreisbogen mit dem übergebenen Radius relativ zu der
-	 * aktuellen Position.
+	 * Draws an arc of a circle with the given radius relative to the current position
 	 * 
 	 * @return Curly.Path
-	 * @param integer X-Position für den Endpunkt
-	 * @param integer Y-Position für den Endpunkt
-	 * @param integer Radius des Kreisbogens
+	 * @param integer X coordinate of the end point
+	 * @param integer Y coordinate of the end point
+	 * @param integer Radius
 	 */
 	arcTo: function(x1, y1, r) {
 		this.pushPosition();
@@ -120,14 +118,13 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	},
 	/**
-	 * Zeichnet einen Kreisbogen mit dem übergebenen Radius.
+	 * Draws an arc of a circle with the given radius
 	 * 
 	 * @return Curly.Path
-	 * @param integer Radius des Kreisbogens
-	 * @param float Startwinkel
-	 * @param float Endwinkel
-	 * @param boolean Flag, ob der Kreisbogen gegen Uhrzeigersinn gezeichnet werden
-	 *  soll.
+	 * @param integer Radius
+	 * @param float The start angle
+	 * @param float The end angle
+	 * @param boolean Flag if the arc should be drawn counter-clockwise
 	 */
 	arc: function(r, sa, se, acw) {
 		this.pushPosition();
@@ -137,24 +134,25 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	},
 	/**
-	 * Zeichnet einen einzelnen Pixel an die aktuelle Position.
+	 * Draws a single pixel.
 	 * 
 	 * @return Curly.Path
 	 */
 	dot: function() {
 		this.pushPosition();
-		// +0.5 damit der Pixel korrekt gezeichnet wird
+		// +0.5 to draw the pixel correctly
+		// TODO: Needed with Canvas.x/yCorrection??
 		this.comp.push(['fillRect', this.x+0.5, this.y+0.5, 1, 1]);
 		return this;
 	},
 	/**
-	 * Zeichnet eine quadratische Kurve.
+	 * Draws a quadratic curve.
 	 * 
 	 * @return Curly.Path
-	 * @param integer X-Position des Ankerpunktes
-	 * @param integer Y-Position des Ankerpunktes
-	 * @param integer X-Position des Zielpunktes
-	 * @param integer Y-Position des Zielpunktes
+	 * @param integer X coordinate of the anchor point
+	 * @param integer Y coordinate of the anchor point
+	 * @param integer X coordinate of the end point
+	 * @param integer Y coordinate of the end point
 	 */
 	quadCurve: function(cpx, cpy, x, y) {
 		this.pushPosition();
@@ -163,15 +161,15 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	},
 	/**
-	 * Zeichnet eine Bezierkurve.
+	 * Draws a bezier curve.
 	 * 
 	 * @return Curly.Path
-	 * @param integer X-Position des ersten Ankerpunktes
-	 * @param integer Y-Position des ersten Ankerpunktes
-	 * @param integer X-Position des zweiten Ankerpunktes
-	 * @param integer Y-Position des zweiten Ankerpunktes
-	 * @param integer X-Position des Zielpunktes
-	 * @param integer Y-Position des Zielpunktes
+	 * @param integer X coordinate of the first anchor point
+	 * @param integer Y coordinate of the first anchor point
+	 * @param integer X coordinate of the second anchor point
+	 * @param integer Y coordinate of the second anchor point
+	 * @param integer X coordinate of the end point
+	 * @param integer Y coordinate of the end point
 	 */
 	bezier: function(cp1x, cp1y, cp2x, cp2y, x, y) {
 		this.pushPosition();
@@ -179,9 +177,8 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		this.moveTo(x, y);
 		return this;
 	},
-	/** 
-	 * Gibt den Pfad der dieses Objekt beschreibt zurück. Die Pfad-Instanz muss
-	 * dabei mit dem übergebenen Canvas-Objekt verknüpft werden.
+	/**
+	 * Returns this instance as a Curly.Path object.
 	 * 
 	 * @return Curly.Path
 	 * @param Curly.Canvas
@@ -193,18 +190,17 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		
 		var clone=new this.constructor();
 		clone.canvas=canvas;
-		clone.comp=this.comp.clone();
+		clone.comp=Curly.cloneArray(this.comp);
 		return clone;
 	},
 	/** 
-	 * Zeichnet dieses Objekt auf den übergebenen Zeichenkontext.
+	 * Draws this object.
 	 * 
 	 * @return Curly.Path
-	 * @param CanvasRenderingContext2D|boolean Renderkontext oder Flag, ob die
-	 *  Füllung gerendert werden soll.
-	 * @param Curly.Canvas|boolean Canvas oder Flag, ob die Linie gerendert
-	 *  werden soll.
-	 * @todo Aufräumen
+	 * @param CanvasRenderingContext2D|boolean Rendering context or a Flag if a
+	 *  filling should be rendered
+	 * @param Curly.Canvas|boolean Canvas or Flag if a stroke should be rendered.
+	 * @todo Clean this up
 	 */
 	draw: function(context, canvas) {
 		if(!(canvas instanceof Curly.Canvas)) {
@@ -222,13 +218,13 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		
 		context.beginPath();
 		
-		Ext.each(this.comp, function(comp) {
-			// Array kopieren, um nicht das Original zu ändern
-			var a=[].concat(comp);
+		for(var i in this.comp) {
+			// Copy the array to not modify the original
+			var a=[].concat(this.comp[i]);
 			var method=a.shift();
 			
 			context[method].apply(context, a);
-		}, this);
+		}
 		
 		if(this.drawFill) {
 			context.fill();
@@ -240,3 +236,4 @@ Ext.extend(Curly.Path, Curly.Shape, {
 		return this;
 	}
 });
+

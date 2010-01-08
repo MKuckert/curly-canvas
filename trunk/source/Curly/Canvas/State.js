@@ -2,8 +2,8 @@
  * @class Curly.Canvas.State
  */
 Curly.Canvas.State=function(config) {
-	Ext.apply(this, config, Curly.Canvas.State.DEFAULTS);
-}
+	Curly.extend(this, Curly.Canvas.State.DEFAULTS, config||{});
+};
 Curly.Canvas.State.IDENTITY_MATRIX=[1,0,0,1,0,0];
 Curly.Canvas.State.OP_SOURCE_OVER='source-over';
 Curly.Canvas.State.OP_SOURCE_IN='source-in';

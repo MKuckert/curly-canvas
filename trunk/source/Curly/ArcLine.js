@@ -1,21 +1,20 @@
 /**
- * Stellt einen Kreisbogen ohne Füllung dar.
+ * Represents an arc of a circle without a filling.
  * 
  * @class Curly.ArcLine
  * @extends Curly.Arc
  */
 /**
  * @constructor
- * @param integer X-Position
- * @param integer Y-Position
- * @param integer Radius des Kreisbogens
- * @param float Startwinkel
- * @param float Endwinkel
- * @param boolean Flag, ob der Kreisbogen gegen Uhrzeigersinn gezeichnet werden
- *  soll.
+ * @param integer X coordinate
+ * @param integer Y coordinate
+ * @param integer Radius
+ * @param float The start angle
+ * @param float The end angle
+ * @param boolean Flag if the arc should be drawn counter-clockwise
  */
 Curly.ArcLine=function(x, y, r, sa, ea, acw) {
 	Curly.ArcLine.superclass.constructor.apply(this, arguments);
 	this.drawFill=false;
-}
-Ext.extend(Curly.ArcLine, Curly.Arc);
+};
+Curly.extendClass(Curly.ArcLine, Curly.Arc);

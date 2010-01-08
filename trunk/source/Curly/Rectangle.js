@@ -1,44 +1,44 @@
 /**
- * Stellt ein Rechteck dar.
+ * Represents a rectangle.
  * 
  * @class Curly.Rectangle
  * @extends Curly.Shape
  */
 /**
  * @constructor
- * @param integer X-Position
- * @param integer Y-Position
- * @param integer Breite des Rechtecks.
- * @param integer Höhe des Rechtecks.
+ * @param integer X coordinate
+ * @param integer Y coordinate
+ * @param integer Width of this object
+ * @param integer Height of this object
  */
 Curly.Rectangle=function(x, y, w, h) {
 	Curly.Rectangle.superclass.constructor.call(this, x, y);
 	
 	/**
-	 * @var integer Die Breite dieses Objekt.
+	 * @var integer Width of this object.
 	 */
 	this.w=w || 0;
 	
 	/**
-	 * @var integer Die Höhe dieses Objekt.
+	 * @var integer Height of this object
 	 */
 	this.h=h || 0;
 	
 	/**
-	 * Setzt die aktuelle Breite und Höhe dieses Objektes.
+	 * Sets the current height and width of this object
 	 * 
 	 * @return Curly.Shape
-	 * @param integer Breite
-	 * @param integer Höhe
+	 * @param integer
+	 * @param integer
 	 */
 	this.resize=function(w, h) {
 		this.w=w;
 		this.h=h;
 		return this;
-	}
+	};
 	
 	/** 
-	 * Gibt den Pfad der dieses Objekt beschreibt zurück.
+	 * Returns this instance as a Curly.Path object.
 	 * 
 	 * @return Curly.Path
 	 * @param Curly.Canvas
@@ -47,6 +47,6 @@ Curly.Rectangle=function(x, y, w, h) {
 		return canvas.
 			path(this.x, this.y).
 			rect(this.w, this.h);
-	}
-}
-Ext.extend(Curly.Rectangle, Curly.Shape);
+	};
+};
+Curly.extendClass(Curly.Rectangle, Curly.Shape);
