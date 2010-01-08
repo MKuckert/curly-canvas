@@ -1,22 +1,25 @@
 <?xml version="1.0"?>
 <project name="BuildCanvas" default="dist" basedir=".">
-	<!-- Einstellungen laden -->
 	<property file="./build.properties" />
 
-	<!-- Buildverzeichnis aufräumen -->
+	<!-- clean up the build directory -->
 	<target name="clean">
 		<echo msg="Cleaning up" />
-		<delete dir="${build.directory}" includeemptydirs="true" />
+		<delete>
+			<fileset dir="${build.directory}">
+				<include name="*.js" />
+			</fileset>
+		</delete>
 	</target>
 	
-	<!-- Buildverzeichnis vorbereiten -->
+	<!-- prepare the build directory -->
 	<target name="prepare-builddir" depends="clean">
 		<echo msg="Making directory ${build.directory}" />
 		<mkdir dir="${build.directory}" />
 	</target>
 
 <!-- JS -->
-	<!-- Mergt alle JS-Dateien -->
+	<!-- Merge all js files -->
 	<target name="build-js" depends="prepare-builddir">
 		<echo msg="Merging JavaScript sources" />
 		<append destFile="${build.jsdist}">
@@ -24,7 +27,7 @@
 		</append>
 	</target>
 	
-	<!-- Minifiziert die Ergebnisdatei -->
+	<!-- Minify the merged js file -->
 	<target name="build-js-min" depends="build-js">
 		<echo msg="Minifying JavaScript sources" />
 		<jsmin targetdir=".">
@@ -35,7 +38,7 @@
 	</target>
 	
 <!-- BUILD -->
-	<!-- Distributions-Build -->
+	<!-- distribution build -->
 	<target name="dist" depends="build-js-min">
 		<echo msg="Build distribution file ready" />
 	</target>
