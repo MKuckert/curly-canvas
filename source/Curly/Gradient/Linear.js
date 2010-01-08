@@ -1,6 +1,6 @@
 /**
- * Stellt einen linearen Farbverlauf dar. Der Verlauf wird durch eine Gerade
- * zwischen zwei Punkten (x0, y0) bis (x1, y1) beschrieben.
+ * Represents a linear color gradient. The gradient is specified by a line with the
+ * two points (x0, y0) and (x1, y1)
  * 
  * @class Curly.Gradient.Linear
  * @extends Curly.Gradient
@@ -11,42 +11,43 @@
  */
 Curly.Gradient.Linear=function(stops) {
 	if(typeof stops==='object') {
-		Ext.apply(this, stops);
+		Curly.extend(this, stops);
 		stops=stops.stops;
 	}
 	Curly.Gradient.Linear.superclass.constructor.call(this, stops);
-}
-Ext.extend(Curly.Gradient.Linear, Curly.Gradient, {
+};
+Curly.extendClass(Curly.Gradient.Linear, Curly.Gradient, {
 	/**
-	 * @var float X-Position des Startpunktes.
+	 * @var float X coordinate of the start point.
 	 */
 	x0: 0,
 	/**
-	 * @var float Y-Position des Startpunktes.
+	 * @var float Y coordinate of the start point.
 	 */
 	y0: 0,
 	/**
-	 * @var float X-Position des Endpunktes.
+	 * @var float X coordinate of the end point.
 	 */
 	x1: 1,
 	/**
-	 * @var float Y-Position des Endpunktes.
+	 * @var float Y coordinate of the end point.
 	 */
 	y1: 1,
 	/**
-	 * Legt die Position des Endpunktes über die übergebene Geradenlänge und
-	 * -winkel relativ zum Startpunkt fest.
+	 * Sets the position of the end point by the given line length and angle
+	 * relative to the start point.
 	 * 
 	 * @return Curly.Gradient.Linear
-	 * @param float Länge der Gerade
-	 * @param float Winkel der Gerade
+	 * @param float Length of the line
+	 * @param float Angle
 	 */
 	positionLine: function(length, angle) {
 		this.x1=length*Math.sin(angle)+this.x0;
 		this.y1=length*Math.cos(angle)+this.y0;
 	},
 	/**
-	 * Erstellt eine Farbverlaufsresource für den übergebenen Render-Context.
+	 * 
+	 * Creates a gradient object for the given rendering context
 	 * 
 	 * @return CanvasGradient
 	 * @param CanvasRenderingContext2D

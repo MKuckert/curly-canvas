@@ -22,8 +22,6 @@
 		<append destFile="${build.jsdist}">
 			<filelist dir="${source.js.directory}" listfile="${source.js.filelist}" />
 		</append>
-		<copy file="${source.js.directory}/excanvas/excanvas.compiled.js" tofile="${build.directory}/excanvas.js" />
-		<copy file="${source.js.directory}/ext-core/ext-core.js" tofile="${build.directory}/ext-core.js" />
 	</target>
 	
 	<!-- Minifiziert die Ergebnisdatei -->

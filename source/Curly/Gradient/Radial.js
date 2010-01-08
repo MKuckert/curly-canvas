@@ -1,4 +1,6 @@
 /**
+ * Represents a radial color gradient.
+ * 
  * @class Curly.Gradient.Radial
  * @extends Curly.Gradient
  */
@@ -8,38 +10,38 @@
  */
 Curly.Gradient.Radial=function(stops) {
 	if(typeof stops==='object') {
-		Ext.apply(this, stops);
+		Curly.extend(this, stops);
 		stops=stops.stops;
 	}
 	Curly.Gradient.Radial.superclass.constructor.call(this, stops);
-}
-Ext.extend(Curly.Gradient.Radial, Curly.Gradient, {
+};
+Curly.extendClass(Curly.Gradient.Radial, Curly.Gradient, {
 	/**
-	 * @var float X-Position des Mittelpunkt des inneren Kreises.
+	 * @var float X coordinate of the center of the inner circle.
 	 */
 	x0: 0,
 	/**
-	 * @var float Y-Position des Mittelpunkt des inneren Kreises.
+	 * @var float Y coordinate of the center of the inner circle.
 	 */
 	y0: 0,
 	/**
-	 * @var float Radius des inneren Kreises.
+	 * @var float Radius of the inner circle
 	 */
 	r0: 0,
 	/**
-	 * @var float X-Position des Mittelpunkt des äußeren Kreises.
+	 * @var float X coordinate of the center of the outer circle.
 	 */
 	x1: 0,
 	/**
-	 * @var float Y-Position des Mittelpunkt des äußeren Kreises.
+	 * @var float Y coordinate of the center of the outer circle.
 	 */
 	y1: 0,
 	/**
-	 * @var float Radius des äußeren Kreises.
+	 * @var float Radius of the outer circle
 	 */
 	r1: 100,
 	/**
-	 * Erstellt eine Farbverlaufsresource für den übergebenen Render-Context.
+	 * Creates a gradient object for the given rendering context
 	 * 
 	 * @return CanvasGradient
 	 * @param CanvasRenderingContext2D

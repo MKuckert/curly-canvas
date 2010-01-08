@@ -1,6 +1,5 @@
 /**
- * Repräsentiert ein Objekt, welches auf einem Canvas-Objekt gezeichnet werden
- * kann und dessen Zeichenpfad als Curly.Path-Objekt ausgedrückt wird.
+ * Represents a drawable object which can be specified by a Curly.Path object.
  * 
  * @class Curly.Shape
  * @extends Curly.Drawable
@@ -12,18 +11,18 @@
  */
 Curly.Shape=function(x, y) {
 	Curly.Shape.superclass.constructor.call(this, x, y);
-}
-Ext.extend(Curly.Shape, Curly.Drawable, {
+};
+Curly.extendClass(Curly.Shape, Curly.Drawable, {
 	/** 
-	 * Gibt den Pfad der dieses Objekt beschreibt zurück. Die Pfad-Instanz muss
-	 * dabei mit dem übergebenen Canvas-Objekt verknüpft werden.
+	 * Returns this instance as a Curly.Path object. The returned instance has
+	 * to be associated with the given canvas object.
 	 * 
 	 * @return Curly.Path
 	 * @param Curly.Canvas
 	 */
 	getPath: function(canvas) {},
-	/** 
-	 * Zeichnet dieses Objekt auf den übergebenen Zeichenkontext.
+	/**
+	 * Draws this object.
 	 * 
 	 * @return void
 	 * @param CanvasRenderingContext2D

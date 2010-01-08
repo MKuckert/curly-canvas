@@ -1,36 +1,36 @@
 /**
- * Repräsentiert ein Objekt, welches auf einem Canvas-Objekt gezeichnet werden
- * kann.
+ * Represents a drawable object. It implements the draw method to perform a draw
+ * operation on a canvas object.
  * 
  * @class Curly.Drawable
  */
 /**
  * @constructor
- * @param integer X-Position
- * @param integer Y-Position
+ * @param integer X coordinate
+ * @param integer Y coordinate
  */
 Curly.Drawable=function(x, y) {
 	/**
-	 * @var integer Die aktuelle X-Position dieses Objektes.
+	 * @var integer X coordinate
 	 */
 	this.x=x || 0;
 	
 	/**
-	 * @var integer Die aktuelle X-Position dieses Objektes.
+	 * @var integer Y coordinate
 	 */
 	this.y=y || 0;
-}
-Curly.Drawable=Ext.extend(Curly.Drawable, {
+};
+Curly.extend(Curly.Drawable, {
 	/**
-	 * @var boolean Flag, ob dieses Objekt eine Füllung zeichnen soll.
+	 * @var boolean Flag, if this object should draw a filling.
 	 */
 	drawFill: true,
 	/**
-	 * @var boolean Flag, ob dieses Objekt eine Außenlinie zeichnen soll.
+	 * @var boolean Flag, if this object should draw a border line.
 	 */
 	drawStroke: true,
 	/**
-	 * Gibt die aktuelle X- und Y-Position dieses Objektes als Array zurück.
+	 * Returns the x and y coordinate of this object as an array.
 	 * 
 	 * @return Array
 	 */
@@ -38,7 +38,7 @@ Curly.Drawable=Ext.extend(Curly.Drawable, {
 		return [this.x, this.x];
 	},
 	/**
-	 * Setzt die aktuelle X- und Y-Position dieses Objektes.
+	 * Sets the x and y coordinate of this object with an array value.
 	 * 
 	 * @return Curly.Drawable
 	 * @param integer X-Position
@@ -50,7 +50,7 @@ Curly.Drawable=Ext.extend(Curly.Drawable, {
 		return this;
 	},
 	/** 
-	 * Zeichnet dieses Objekt auf den übergebenen Zeichenkontext.
+	 * Draws this object to the given canvas object
 	 * 
 	 * @return void
 	 * @param CanvasRenderingContext2D

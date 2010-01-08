@@ -1,5 +1,5 @@
 /**
- * Stellt einen einzelnen Pixel dar.
+ * Represents a single pixel.
  * 
  * @class Curly.Pixel
  * @extends Curly.Shape
@@ -13,7 +13,7 @@ Curly.Pixel=function(x, y) {
 	Curly.Pixel.superclass.constructor.call(this, x, y);
 	
 	/** 
-	 * Gibt den Pfad der dieses Objekt beschreibt zurück.
+	 * Returns this instance as a Curly.Path object.
 	 * 
 	 * @return Curly.Path
 	 * @param Curly.Canvas
@@ -22,6 +22,6 @@ Curly.Pixel=function(x, y) {
 		return canvas
 			.path(this.x, this.y)
 			.dot();
-	}
-}
-Ext.extend(Curly.Pixel, Curly.Shape);
+	};
+};
+Curly.extendClass(Curly.Pixel, Curly.Shape);

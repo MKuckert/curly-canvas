@@ -1,43 +1,43 @@
 /**
- * Stellt eine quadratische Kurve dar.
+ * Represents a quadratic curve
  * 
  * @class Curly.QuadCurve
  * @extends Curly.Shape
  */
 /**
  * @constructor
- * @param integer X-Position des Startpunktes
- * @param integer Y-Position des Startpunktes
- * @param integer X-Position des Zielpunktes
- * @param integer Y-Position des Zielpunktes
- * @param integer X-Position des Ankerpunktes
- * @param integer Y-Position des Ankerpunktes
+ * @param integer X coordinate of the start point
+ * @param integer Y coordinate of the start point
+ * @param integer X coordinate of the end point
+ * @param integer Y coordinate of the end point
+ * @param integer X coordinate of the anchor point
+ * @param integer Y coordinate of the anchor point
  */
 Curly.QuadCurve=function(x0, y0, x1, y1, cpx, cpy) {
 	Curly.QuadCurve.superclass.constructor.call(this, x0, y0);
 	
 	/**
-	 * @var integer X-Position des Zielpunktes
+	 * @var integer X coordinate of the end point
 	 */
 	this.x1=x1 || 0;
 	
 	/**
-	 * @var integer Y-Position des Zielpunktes
+	 * @var integer Y coordinate of the end point
 	 */
 	this.y1=y1 || 0;
 	
 	/**
-	 * @var integer X-Position des Ankerpunktes
+	 * @var integer X coordinate of the anchor point
 	 */
 	this.cpx=cpx || 0;
 	
 	/**
-	 * @var integer Y-Position des Ankerpunktes
+	 * @var integer Y coordinate of the anchor point
 	 */
 	this.cpy=cpy || 0;
 	
-	/** 
-	 * Gibt den Pfad der dieses Objekt beschreibt zurück.
+	/**
+	 * Returns this instance as a Curly.Path object.
 	 * 
 	 * @return Curly.Path
 	 * @param Curly.Canvas
@@ -47,6 +47,6 @@ Curly.QuadCurve=function(x0, y0, x1, y1, cpx, cpy) {
 			.path()
 			.moveTo(this.x, this.y)
 			.quadCurve(this.cpx, this.cpy, this.x1, this.y1);
-	}
-}
-Ext.extend(Curly.QuadCurve, Curly.Shape);
+	};
+};
+Curly.extendClass(Curly.QuadCurve, Curly.Shape);

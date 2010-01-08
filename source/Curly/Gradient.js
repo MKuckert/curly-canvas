@@ -1,7 +1,7 @@
 /**
- * @class Curly.Gradient
+ * Represents a color gradient
  * 
- * Stellt einen Farbverlauf dar.
+ * @class Curly.Gradient
  */
 /**
  * @constructor
@@ -9,29 +9,30 @@
  */
 Curly.Gradient=function(stops) {
 	this.stops=[];
-	if(Ext.isArray(stops)) {
-		Ext.each(stops, function(stop) {
-			this.addColorStop(stop.offset, stop.color);
-		}, this);
+	
+	if(stops instanceof Array) {
+		for(var i=0, n=this.length; i<n; i++) {
+			this.addColorStop(stops[i].offset, stops[i].color);
+		}
 	}
 	else if(typeof stops==='object') {
 		this.addColorStop(stops.offset, stops.color);
 	}
-}
-/** 
- * Fügt diesem Farbverlauf eine Farbe hinzu.
+};
+/**
+ * Adds a color stop to this gradient.
  * 
  * @return Curly.Gradient
- * @param float Position der Farbe. Wert zwischen 0 und 1.
- * @param string Farbwert
+ * @param float Position of the color (in the interval [0, 1])
+ * @param string The color
  */
 Curly.Gradient.prototype.addColorStop=function(offset, color) {
 	this.stops.push({offset:offset, color:color});
 	return this;
-}
+};
 
 /**
- * Erstellt eine Farbverlaufsresource für den übergebenen Render-Context.
+ * Creates a gradient object for the given rendering context
  * 
  * @return CanvasGradient
  * @param CanvasRenderingContext2D
@@ -40,17 +41,17 @@ Curly.Gradient.prototype.addColorStop=function(offset, color) {
  */
 Curly.Gradient.prototype.createGradient=function(context, canvas) {
 	throw new Curly.Canvas.Error('Not implemented');
-}
+};
 
 /**
- * Fügt die Farbpositionen dieses Farbverlaufs der übergebenen Resource hinzu.
+ * Adds the color stops of the gradient to the given gradient object.
  * 
  * @return Curly.Gradient
  * @param CanvasGradient
  * @internal
  */
 Curly.Gradient.prototype.applyColorStops=function(gradient) {
-	Ext.each(this.stops, function(stop) {
-		gradient.addColorStop(stop.offset, stop.color);
-	}, this);
-}
+	for(var i=0, n=this.stops.length; i<n; i++) {
+		gradient.addColorStop(this.stops[i].offset, this.stops[i].color);
+	}
+};

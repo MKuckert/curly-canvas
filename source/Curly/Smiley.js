@@ -1,5 +1,5 @@
 /**
- * Zeichnet ein Smiley
+ * Draws a smiley
  * 
  * @class Curly.Smiley
  * @extends Curly.Shape
@@ -8,23 +8,23 @@
  * @constructor
  * @param integer X-Position
  * @param integer Y-Position
- * @param Object Weitere Konfigurationen
+ * @param Object Additional configurations
  */
 Curly.Smiley=function(x, y, config) {
 	Curly.Smiley.superclass.constructor.apply(this, arguments);
-	Ext.apply(this, config);
-}
-Ext.extend(Curly.Smiley, Curly.Shape, {
+	Curly.extend(this, config);
+};
+Curly.extendClass(Curly.Smiley, Curly.Shape, {
 	/**
-	 * @var String Hauptfarbe des Smiley
+	 * @var String Main color of the smiley
 	 */
 	mainColor: 'yellow',
 	/**
-	 * @var String Rahmenfarbe
+	 * @var String Color of the border
 	 */
 	borderColor: 'black',
 	/** 
-	 * Gibt den Pfad der dieses Objekt beschreibt zurück.
+	 * Returns this instance as a Curly.Path object.
 	 * 
 	 * @return Curly.Path
 	 * @param Curly.Canvas

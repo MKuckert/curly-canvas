@@ -1,22 +1,22 @@
 /**
- * Stellt einen Pfad dar, welcher Änderungen am Canvas-Zustand vornehmen und
- * untergeordnete Drawable-Objekte zeichnen kann.
+ * Extends the path to enable changing of the canvas state and drawing of
+ * ancillary Drawable objects.
  * 
  * @class Curly.StatefulPath
  * @extends Curly.Path
  */
 /**
  * @constructor
- * @param integer X-Position des Startpunktes
- * @param integer Y-Position des Startpunktes
- * @param Curly.Canvas Mit diesem Pfad referenziertes Canvas-Objekt
+ * @param integer X coordinate of the start point
+ * @param integer Y coordinate of the start point
+ * @param Curly.Canvas
  */
 Curly.StatefulPath=function(x, y, canvas) {
 	Curly.StatefulPath.superclass.constructor.apply(this, arguments);
-}
-Ext.extend(Curly.StatefulPath, Curly.Path, {
+};
+Curly.extendClass(Curly.StatefulPath, Curly.Path, {
 	/**
-	 * Zeichnet das übergebene Drawable-Element.
+	 * Draws the given Drawable element.
 	 * 
 	 * @return Curly.Path
 	 * @param Curly.Drawable
@@ -26,7 +26,7 @@ Ext.extend(Curly.StatefulPath, Curly.Path, {
 		return this;
 	},
 	/**
-	 * Überschreibt den aktuellen Canvas-Zustand.
+	 * Overwrites the current canvas state.
 	 * 
 	 * @return Curly.Path
 	 * @param Curly.Canvas.State|String
@@ -44,14 +44,13 @@ Ext.extend(Curly.StatefulPath, Curly.Path, {
 		return this;
 	},
 	/** 
-	 * Zeichnet dieses Objekt auf den übergebenen Zeichenkontext.
+	 * Draws this object.
 	 * 
 	 * @return Curly.Path
-	 * @param CanvasRenderingContext2D|boolean Renderkontext oder Flag, ob die
-	 *  Füllung gerendert werden soll.
-	 * @param Curly.Canvas|boolean Canvas oder Flag, ob die Linie gerendert
-	 *  werden soll.
-	 * @todo Aufräumen
+	 * @param CanvasRenderingContext2D|boolean Rendering context or a Flag if a
+	 *  filling should be rendered
+	 * @param Curly.Canvas|boolean Canvas or Flag if a stroke should be rendered.
+	 * @todo Clean this up
 	 */
 	draw: function(context, canvas) {
 		if(!(canvas instanceof Curly.Canvas)) {
@@ -75,12 +74,15 @@ Ext.extend(Curly.StatefulPath, Curly.Path, {
 			if(self.drawStroke) {
 				context.stroke();
 			}
-		}
+		};
 		
 		context.beginPath();
 		
-		Ext.each(this.comp, function(comp) {
-			// Array kopieren, um nicht das Original zu ändern
+		var comp;
+		for(var i in this.comp) {
+			comp=this.comp[i];
+			
+			// Copy the array to not modify the original
 			var a=[].concat(comp);
 			var method=a.shift();
 			
@@ -103,7 +105,7 @@ Ext.extend(Curly.StatefulPath, Curly.Path, {
 			else {
 				context[method].apply(context, a);
 			}
-		}, this);
+		}
 		
 		render();
 		context.closePath();
