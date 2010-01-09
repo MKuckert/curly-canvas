@@ -141,7 +141,6 @@ Curly.extendClass(Curly.Path, Curly.Shape, {
 	dot: function() {
 		this.pushPosition();
 		// +0.5 to draw the pixel correctly
-		// TODO: Needed with Canvas.x/yCorrection??
 		this.comp.push(['fillRect', this.x+0.5, this.y+0.5, 1, 1]);
 		return this;
 	},
