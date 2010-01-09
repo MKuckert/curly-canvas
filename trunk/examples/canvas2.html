@@ -4,9 +4,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>Canvas</title>
-		<script type="text/javascript" src="../build/ext-core.js"></script>
 		<script type="text/javascript" src="../build/dist.js"></script>
-		<!--[if IE]><script type="text/javascript" src="../build/excanvas.js"></script><![endif]-->
 	</head>
 	<body>
 		<canvas id="c" width="300" height="150"></canvas>
@@ -19,7 +17,7 @@ function smiley(canvas, dontClear) {
 	}
 	canvas.draw(new Curly.Smiley());
 }
-/*window.onload = */function f() {
+function f() {
 	var el=document.getElementById('c');
 	canvas=new Curly.Canvas(el);
 	el.style.border='1px solid #AAA';
@@ -52,21 +50,25 @@ function smiley(canvas, dontClear) {
 	var img=document.getElementById('img');
 	ctx.setTransform.apply(ctx, Curly.Canvas.State.IDENTITY_MATRIX);
 	
-	canvas.clip(new Curly.Rectangle(20, 20, 30, 30));
-	canvas.copy(img, 0, 0, 50, 50);
+	canvas.clip(new Curly.Rectangle(20, 20, 40, 40));
+	canvas.copy(img, 0, 0, 200, 50);
 	
 	canvas.clip(new Curly.Rectangle(100, 20, 30, 30));
 	canvas.draw(new Curly.Rectangle(0, 0, 300, 150));
 	
 	canvas.clip(
 		canvas.
-			path(20, 55).
-			lineTo(100, 30).
-			lineTo(50, 100)
+			path(20, 70).
+			lineTo(80, 80).
+			lineTo(20, 100)
 	);
 	canvas.draw(new Curly.Rectangle(0, 0, 300, 150));
 	
 	canvas.unclip();
+	for(var i=0; i<10; i++) {
+		canvas.draw(new Curly.Pixel(30, 120+i*2));
+	}
+	
 	smiley(canvas, true);
 }
 //		]]></script>

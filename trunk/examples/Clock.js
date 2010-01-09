@@ -1,28 +1,29 @@
 /**
  * @class Curly.Clock
  * @extends Ext.util.Observable
+ * 
+ * @todo Translate comments
  */
 /**
  * @constructor
  * @param Object Konfigurationsparameter
  */
 Curly.Clock=function(config) {
-	Ext.apply(this, config || {});
+	Curly.extend(this, config || {});
 	Curly.Clock.superclass.constructor.apply(this, arguments);
 	
 	if(this.runTask) {
-		this.task=Ext.TaskMgr.start({
-			run:		this.render,
-			scope:		this,
-			interval:	1000
-		});
+		var self=this;
+		this.task=window.setInterval(function() {
+			self.render();
+		}, 1000);
 	}
 	
 	this.render();
-}
-Ext.extend(Curly.Clock, Ext.util.Observable, {
+};
+Curly.extendClass(Curly.Clock, Object, {
 	/**
-	 * @var Curly.Canvas Das für Zeichenvorgänge zu verwendende Canvas-Objekt.
+	 * @var Curly.Canvas Das fï¿½r Zeichenvorgï¿½nge zu verwendende Canvas-Objekt.
 	 */
 	canvas: null,
 	/**
@@ -34,7 +35,7 @@ Ext.extend(Curly.Clock, Ext.util.Observable, {
 	 */
 	y: 0,
 	/**
-	 * @var integer Größe der Uhr.
+	 * @var integer Grï¿½ï¿½e der Uhr.
 	 */
 	size: 30,
 	/**
@@ -44,11 +45,11 @@ Ext.extend(Curly.Clock, Ext.util.Observable, {
 	autoClear: true,
 	/**
 	 * @var boolean Flag, ob dieses Objekt mit Hilfe eines Taskrunners
-	 * regelmäßig neu gerendert werden soll.
+	 * regelmï¿½ï¿½ig neu gerendert werden soll.
 	 */
 	runTask: true,
 	/**
-	 * @var Object Der im TaskRunner eingefügte Task.
+	 * @var Object Der im TaskRunner eingefï¿½gte Task.
 	 */
 	task: null,
 	/**
@@ -57,60 +58,60 @@ Ext.extend(Curly.Clock, Ext.util.Observable, {
 	 */
 	date: null,
 	/**
-	 * @var Object Canvas-Zustand während des Zeichnen des Außenkreises.
+	 * @var Object Canvas-Zustand wï¿½hrend des Zeichnen des Auï¿½enkreises.
 	 */
 	outerArcState: {
 		strokeStyle:		'black',
 		lineWidth:			2
 	},
 	/**
-	 * @var Object Canvas-Zustand während des Zeichnen der Skala.
+	 * @var Object Canvas-Zustand wï¿½hrend des Zeichnen der Skala.
 	 */
 	scaleState: {
 		lineWidth:			3
 	},
 	/**
-	 * @var integer Länge der Skalaangaben zu 3, 6, 9 und 12 Uhr im Verhältnis
-	 * zu der Gesamtgröße.
+	 * @var integer Lï¿½nge der Skalaangaben zu 3, 6, 9 und 12 Uhr im Verhï¿½ltnis
+	 * zu der Gesamtgrï¿½ï¿½e.
 	 */
 	scaleInnerSize: 4,
 	/**
-	 * @var integer Länge der Skalaangaben zu 1, 2, 4, 5, 7, 8, 10 und 11 Uhr.
+	 * @var integer Lï¿½nge der Skalaangaben zu 1, 2, 4, 5, 7, 8, 10 und 11 Uhr.
 	 */
 	scaleOuterSize: 8,
 	/**
-	 * @var Object Canvas-Zustand während des Zeichnen des Stundenzeiger.
+	 * @var Object Canvas-Zustand wï¿½hrend des Zeichnen des Stundenzeiger.
 	 */
 	hourIndicatorState: {
 		lineWidth:			3
 	},
 	/**
-	 * @var Object Canvas-Zustand während des Zeichnen des Minutenzeiger.
+	 * @var Object Canvas-Zustand wï¿½hrend des Zeichnen des Minutenzeiger.
 	 */
 	minuteIndicatorState: {
 		lineWidth:			2
 	},
 	/**
-	 * @var Object Canvas-Zustand während des Zeichnen des Sekundenzeiger.
+	 * @var Object Canvas-Zustand wï¿½hrend des Zeichnen des Sekundenzeiger.
 	 */
 	secondIndicatorState: {
 		lineWidth:			1
 	},
 	/**
-	 * @var integer Wert für die Berechnung des Stundenzeigers proportional zu
-	 * der size-Angabe. Die verwendete Zeigerlänge entspricht dem size-Wert
+	 * @var integer Wert fï¿½r die Berechnung des Stundenzeigers proportional zu
+	 * der size-Angabe. Die verwendete Zeigerlï¿½nge entspricht dem size-Wert
 	 * verringert um diesen Wert.
 	 */
 	hourIndicatorShorten: 10,
 	/**
-	 * @var integer Wert für die Berechnung des Minutenzeigers proportional zu
-	 * der size-Angabe. Die verwendete Zeigerlänge entspricht dem size-Wert
+	 * @var integer Wert fï¿½r die Berechnung des Minutenzeigers proportional zu
+	 * der size-Angabe. Die verwendete Zeigerlï¿½nge entspricht dem size-Wert
 	 * verringert um diesen Wert.
 	 */
 	minuteIndicatorShorten: 2,
 	/**
-	 * @var integer Wert für die Berechnung des Sekundenzeigers proportional zu
-	 * der size-Angabe. Die verwendete Zeigerlänge entspricht dem size-Wert
+	 * @var integer Wert fï¿½r die Berechnung des Sekundenzeigers proportional zu
+	 * der size-Angabe. Die verwendete Zeigerlï¿½nge entspricht dem size-Wert
 	 * verringert um diesen Wert.
 	 */
 	secondIndicatorShorten: 1,
