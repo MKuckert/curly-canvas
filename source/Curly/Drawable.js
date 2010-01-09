@@ -20,7 +20,7 @@ Curly.Drawable=function(x, y) {
 	 */
 	this.y=y || 0;
 };
-Curly.extend(Curly.Drawable, {
+Curly.extendClass(Curly.Drawable, Object, {
 	/**
 	 * @var boolean Flag, if this object should draw a filling.
 	 */

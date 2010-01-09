@@ -36,27 +36,16 @@ Curly.Canvas=function(source) {
 		ctx=source;
 	}
 	else if(source instanceof Element && source.tagName.toLowerCase()=='canvas') {
+		// Support for excanvas
+		if(window.G_vmlCanvasManager) {
+			G_vmlCanvasManager.initElement(source);
+		}
+		
 		ctx=source.getContext('2d');
 	}
 	else {
 		throw new Curly.Canvas.Error('The given argument is no valid parameter');
 	}
-	
-	// TODO: Refactor Canvas::addEvents
-	this.addEvents({
-		/**
-		 * @event beforedraw
-		 * @param Curly.Drawable
-		 * @param Curly.Canvas
-		 */
-		beforedraw:		true,
-		/**
-		 * @event afterdraw
-		 * @param Curly.Drawable
-		 * @param Curly.Canvas
-		 */
-		afterdraw:		true
-	});
 	
 	/**
 	 * @var float Correcting for the x coordinate. Is applied to every canvas state.
@@ -146,11 +135,6 @@ Curly.Canvas=function(source) {
 		ctx.shadowColor=s.shadowColor;
 		ctx.strokeStyle=determineStyle(s.strokeStyle);
 		ctx.fillStyle=determineStyle(s.fillStyle);
-		
-		// TODO:
-		//font;
-		//textAlign;
-		//textBaseline;
 	};
 	
 	/**
@@ -229,11 +213,8 @@ Curly.Canvas=function(source) {
 		}
 
 		// Resize the canvas
-		// TODO: Remove Ext.fly
-		Ext.fly(ctx.canvas).set({
-			width:		w,
-			height:		h
-		});
+		ctx.canvas.width=w;
+		ctx.canvas.height=h;
 		
 		// Restore stored image data, if available
 		if(data) {
@@ -241,77 +222,6 @@ Curly.Canvas=function(source) {
 		}
 		
 		return this;
-	};
-	
-	// TODO: Improve call: XY-Cache and move-Event
-	/**
-	 * Converts the given global x coordinate into the local coordinate system.
-	 * 
-	 * @return integer
-	 * @param integer
-	 */
-	this.globalToLocalX=function(x) {
-		// TODO: Remove Ext.fly
-		return x-Ext.fly(this.getElement()).getX();
-	};
-	
-	/**
-	 * Converts the given global y coordinate into the local coordinate system.
-	 * 
-	 * @return integer
-	 * @param integer
-	 */
-	this.globalToLocalY=function(y) {
-		// TODO: Remove Ext.fly
-		return y-Ext.fly(this.getElement()).getY();
-	};
-	
-	/**
-	 * Converts the given global coordinate into the local coordinate system.
-	 * 
-	 * @return Array
-	 * @param Array
-	 */
-	this.globalToLocal=function(ar) {
-		return [
-			this.globalToLocalX(ar[0]),
-			this.globalToLocalY(ar[1])
-		];
-	};
-	
-	/**
-	 * Converts the given local x coordinate into the global coordinate system.
-	 * 
-	 * @return integer
-	 * @param integer
-	 */
-	this.localToGlobalX=function(x) {
-		// TODO: Remove Ext.fly
-		return x+Ext.fly(this.getElement()).getX();
-	};
-	
-	/**
-	 * Converts the given local y coordinate into the global coordinate system.
-	 * 
-	 * @return integer
-	 * @param integer
-	 */
-	this.localToGlobalY=function(y) {
-		// TODO: Remove Ext.fly
-		return y+Ext.fly(this.getElement()).getY();
-	};
-	
-	/**
-	 * Converts the given local coordinate into the global coordinate system.
-	 * 
-	 * @return Array
-	 * @param Array
-	 */
-	this.localToGlobal=function(ar) {
-		return [
-			this.localToGlobalX(ar[0]),
-			this.localToGlobalY(ar[1])
-		];
 	};
 	
 	/**
@@ -403,7 +313,7 @@ Curly.Canvas=function(source) {
 		var state={};
 		var currentState=this.getState();
 		if(currentState!=undefined) {
-			Curly.extend(state, currentState[i]);
+			Curly.extend(state, currentState);
 		}
 		
 		this.pushState(new Curly.Canvas.State(Curly.extend(state, changes)));
@@ -650,14 +560,7 @@ Curly.Canvas=function(source) {
 		}
 		
 		setState();
-		
-		if(!this.fireEvent('beforedraw', drawable, this)) {
-			return this;
-		}
-		
 		drawable.draw(ctx, this);
-		
-		this.fireEvent('afterdraw', drawable, this);
 		
 		return this;
 	};
@@ -672,10 +575,6 @@ Curly.Canvas=function(source) {
 	this.clip=function(shape) {
 		if(!(shape instanceof Curly.Shape)) {
 			throw new Curly.Canvas.Error('The given object is no shape object');
-		}
-		
-		if(!this.fireEvent('beforeclip', shape, this)) {
-			return this;
 		}
 		
 		// Alten Zustand wiederherstellen, um Clipping Region zu verwerfen
@@ -697,8 +596,6 @@ Curly.Canvas=function(source) {
 		this.useCorrection=tmp;
 		setState();
 		
-		this.fireEvent('afterclip', shape, this);
-		
 		return this;
 	};
 	
@@ -714,3 +611,5 @@ Curly.Canvas=function(source) {
 	
 	this.pushDefaultState();
 };
+
+Curly.extendClass(Curly.Canvas, Object);

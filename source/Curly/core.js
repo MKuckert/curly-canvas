@@ -32,7 +32,10 @@ Curly.extendClass=function(child, parent, methods) {
 	var extendHelper=function(){};
 	extendHelper.prototype=parent.prototype;
 	child.prototype=new extendHelper();
-	Curly.extend(child.prototype, parent.prototype, methods[i]);
+	Curly.extend(child.prototype, parent.prototype);
+	if(methods!==undefined) {
+		Curly.extend(child.prototype, methods);
+	}
 	child.superclass=parent.prototype;
 	return child;
 };

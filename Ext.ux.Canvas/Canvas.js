@@ -1,6 +1,6 @@
 Ext.ux.Canvas=function(config) {
 	Ext.ux.Canvas.superclass.constructor.call(this, config);
-}
+};
 Ext.extend(Ext.ux.Canvas, Ext.BoxComponent, {
 	width: 300,
 	height: 150,
@@ -8,11 +8,6 @@ Ext.extend(Ext.ux.Canvas, Ext.BoxComponent, {
 	ctx: null,
 	// private
 	afterRender: function() {
-		// IE
-		if(window.G_vmlCanvasManager) {
-			G_vmlCanvasManager.initElement(this.el.dom);
-		}
-		
 		this.ctx=new Curly.Canvas(this.el.dom);
 		this.ctx.setDimensions([this.width, this.height]);
 		
