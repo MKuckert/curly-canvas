@@ -129,7 +129,7 @@ Curly.extendClass(Curly.Path, Curly.Shape, {
 	arc: function(r, sa, se, acw) {
 		this.pushPosition();
 		this.comp.push(['moveTo', this.x+r, this.y]);
-		this.comp.push(['arc', this.x, this.y, r, sa, se, acw]);
+		this.comp.push(['arc', this.x, this.y, r, sa||0, se||Math.PI<<1, acw||false]);
 		this.moveTo(this.x+r, this.y);
 		return this;
 	},
@@ -215,6 +215,7 @@ Curly.extendClass(Curly.Path, Curly.Shape, {
 			}
 		}
 		
+		canvas.applyState();
 		context.beginPath();
 		
 		for(var i in this.comp) {

@@ -960,7 +960,7 @@ Curly.extendClass(Curly.Path, Curly.Shape, {
 	arc: function(r, sa, se, acw) {
 		this.pushPosition();
 		this.comp.push(['moveTo', this.x+r, this.y]);
-		this.comp.push(['arc', this.x, this.y, r, sa, se, acw]);
+		this.comp.push(['arc', this.x, this.y, r, sa||0, se||Math.PI<<1, acw||false]);
 		this.moveTo(this.x+r, this.y);
 		return this;
 	},
@@ -1046,6 +1046,7 @@ Curly.extendClass(Curly.Path, Curly.Shape, {
 			}
 		}
 		
+		canvas.applyState();
 		context.beginPath();
 		
 		for(var i in this.comp) {
@@ -1482,12 +1483,12 @@ Curly.Gradient=function(stops) {
 	this.stops=[];
 	
 	if(stops instanceof Array) {
-		for(var i=0, n=this.length; i<n; i++) {
-			this.addColorStop(stops[i].offset, stops[i].color);
+		for(var i=0, n=stops.length; i<n; i++) {
+			this.addColorStop(stops[i][0], stops[i][1]);
 		}
 	}
 	else if(typeof stops==='object') {
-		this.addColorStop(stops.offset, stops.color);
+		this.addColorStop(stops[0], stops[1]);
 	}
 };
 /**
@@ -1498,7 +1499,7 @@ Curly.Gradient=function(stops) {
  * @param string The color
  */
 Curly.Gradient.prototype.addColorStop=function(offset, color) {
-	this.stops.push({offset:offset, color:color});
+	this.stops.push([offset, color]);
 	return this;
 };
 
@@ -1523,7 +1524,7 @@ Curly.Gradient.prototype.createGradient=function(context, canvas) {
  */
 Curly.Gradient.prototype.applyColorStops=function(gradient) {
 	for(var i=0, n=this.stops.length; i<n; i++) {
-		gradient.addColorStop(this.stops[i].offset, this.stops[i].color);
+		gradient.addColorStop(this.stops[i][0], this.stops[i][1]);
 	}
 };
 /**
@@ -1599,6 +1600,18 @@ Curly.extendClass(Curly.Gradient.Linear, Curly.Gradient, {
  */
 Curly.Gradient.Radial=function(stops) {
 	if(typeof stops==='object') {
+		if(stops.x) {
+			stops.x0=stops.x1=stops.x;
+			delete stops.x;
+		}
+		if(stops.y) {
+			stops.y0=stops.y1=stops.y;
+			delete stops.y;
+		}
+		if(stops.r) {
+			stops.r1=stops.r;
+			delete stops.r;
+		}
 		Curly.extend(this, stops);
 		stops=stops.stops;
 	}
