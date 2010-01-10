@@ -10,6 +10,18 @@
  */
 Curly.Gradient.Radial=function(stops) {
 	if(typeof stops==='object') {
+		if(stops.x) {
+			stops.x0=stops.x1=stops.x;
+			delete stops.x;
+		}
+		if(stops.y) {
+			stops.y0=stops.y1=stops.y;
+			delete stops.y;
+		}
+		if(stops.r) {
+			stops.r1=stops.r;
+			delete stops.r;
+		}
 		Curly.extend(this, stops);
 		stops=stops.stops;
 	}

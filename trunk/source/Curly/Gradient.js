@@ -11,12 +11,12 @@ Curly.Gradient=function(stops) {
 	this.stops=[];
 	
 	if(stops instanceof Array) {
-		for(var i=0, n=this.length; i<n; i++) {
-			this.addColorStop(stops[i].offset, stops[i].color);
+		for(var i=0, n=stops.length; i<n; i++) {
+			this.addColorStop(stops[i][0], stops[i][1]);
 		}
 	}
 	else if(typeof stops==='object') {
-		this.addColorStop(stops.offset, stops.color);
+		this.addColorStop(stops[0], stops[1]);
 	}
 };
 /**
@@ -27,7 +27,7 @@ Curly.Gradient=function(stops) {
  * @param string The color
  */
 Curly.Gradient.prototype.addColorStop=function(offset, color) {
-	this.stops.push({offset:offset, color:color});
+	this.stops.push([offset, color]);
 	return this;
 };
 
@@ -52,6 +52,6 @@ Curly.Gradient.prototype.createGradient=function(context, canvas) {
  */
 Curly.Gradient.prototype.applyColorStops=function(gradient) {
 	for(var i=0, n=this.stops.length; i<n; i++) {
-		gradient.addColorStop(this.stops[i].offset, this.stops[i].color);
+		gradient.addColorStop(this.stops[i][0], this.stops[i][1]);
 	}
 };
