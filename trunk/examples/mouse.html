@@ -7,56 +7,85 @@
 		<script type="text/javascript" src="../build/dist.js"></script>
 	</head>
 	<body>
-		<canvas id="c" width="500" height="300"></canvas>
+		<canvas id="c" width="400" height="300"></canvas>
 		<script type="text/javascript">//<![CDATA[
-var canvas, ctx;
+var canvas, ctx, touches=[];
 window.onload = function() {
-try {
-	var el=document.getElementById('c');
-	canvas=new Curly.Canvas(el);
-	el.style.border='1px solid #AAA';
-	el.style.position='absolute';
-	el.style.left='50%';
-	el.style.top='50%';
-	el.style.marginLeft=-(canvas.getWidth()>>1)+'px';
-	el.style.marginTop=-(canvas.getHeight()>>1)+'px';
-	
-	ctx=canvas.getCtx();
-	
-	el.addEventListener('click', onClick, true);
-}
-catch(e) {
-	console.log(e);
-}
+	try {
+		var el=document.getElementById('c');
+		canvas=new Curly.Canvas(el);
+		el.style.border='1px solid #AAA';
+		/*el.style.position='absolute';
+		el.style.left='50%';
+		el.style.top='50%';
+		el.style.marginLeft=-(canvas.getWidth()>>1)+'px';
+		el.style.marginTop=-(canvas.getHeight()>>1)+'px';*/
+		
+		ctx=canvas.getCtx();
+		
+		el.addEventListener('click', onClick, true);
+		el.addEventListener('touchend', onClick, true);
+		
+		setInterval(draw, 50);
+	}
+	catch(e) {
+		console.log(e);
+	}
 }
 
-function onClick(event) {
-	canvas.clear();
-	
+function addTouch(x, y){
+	touches.push({
+		x: x,
+		y: y,
+		a: 100
+	});
+}
+
+function onClick(event){
 	var x, y;
-	if(event) {
-		x = event.layerX;
-		y = event.layerY;
+	if(event.touches) {
+		for(var i=0, n=event.touches.length; i<n; i++) {
+			addTouch(event.touches[i].pageX, event.touches[i].pageY);
+		}
+	}
+	else if(event) {
+		addTouch(event.layerX, event.layerY);
 	}
 	else {
-		x = event.offsetX;
-		y = event.offsetY;
+		addTouch(event.offsetX, event.offsetY);
 	}
+}
+
+function draw() {
 	var r=20;
-	
-	var gradient=new Curly.Gradient.Radial({
-		x: x, y: y, r: r,
-		stops: [
-			[0, 'red'],
-			[1, 'rgba(255, 0, 0, 0)']
-		]
-	});
-	
-	canvas.
-		overwriteState('fillStyle', gradient).
-		path(x, y).
-		arc(r).
-		draw(true, false);
+	canvas.clear();
+	for (var i = 0; i < touches.length; i++) {
+		var touch=touches[i];
+		
+		var gradient = new Curly.Gradient.Radial({
+			x: touch.x,
+			y: touch.y,
+			r: r,
+			stops: [
+				[0, 'rgba(255, 0, 0, 100)'],
+				[1, 'rgba(255, 0, 0, 0)']
+			]
+		});
+		//console.log(gradient.stops[0][1]);
+		
+		canvas.
+			overwriteState('fillStyle', gradient).
+			overwriteState('alpha', touch.a/100.0).
+			path(touch.x, touch.y).
+			arc(r).
+			draw(true, false);
+		
+		touch.a-=2;
+		if(touch.a<=0) {
+			touches.splice(i, 1);
+			i--;
+		}
+	}
 }
 //		]]></script>
 	</body>
