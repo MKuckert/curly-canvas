@@ -22,6 +22,17 @@ Curly.Canvas.State.CAP_SQUARE='square';
 Curly.Canvas.State.JOIN_ROUND='round';
 Curly.Canvas.State.JOIN_BEVEL='bevel';
 Curly.Canvas.State.JOIN_MITER='miter';
+Curly.Canvas.State.ALIGN_START='start';
+Curly.Canvas.State.ALIGN_END='end';
+Curly.Canvas.State.ALIGN_LEFT='left';
+Curly.Canvas.State.ALIGN_RIGHT='right';
+Curly.Canvas.State.ALIGN_CENTER='center';
+Curly.Canvas.State.BASELINE_TOP='top';
+Curly.Canvas.State.BASELINE_HANGING='hanging';
+Curly.Canvas.State.BASELINE_MIDDLE='middle';
+Curly.Canvas.State.BASELINE_ALPHABETIC='alphabetic';
+Curly.Canvas.State.BASELINE_IDEOGRAPHIC='ideographic';
+Curly.Canvas.State.BASELINE_BOTTOM='bottom';
 Curly.Canvas.State.DEFAULTS={
 	scaleX:				1.0,
 	scaleY:				1.0,
@@ -40,7 +51,10 @@ Curly.Canvas.State.DEFAULTS={
 	shadowOffsetX:		0.0,
 	shadowOffsetY:		0.0,
 	shadowBlur:			0.0,
-	shadowColor:		'black'
+	shadowColor:		'black',
+	font:				'10px sans-serif',
+	textAlign:			Curly.Canvas.State.ALIGN_START,
+	textBaseline:		Curly.Canvas.State.BASELINE_ALPHABETIC
 };
 Curly.Canvas.State.COLOR_TRANSPARENT='rgba(0,0,0,0)';
 Curly.Transparent='rgba(0,0,0,0)';

@@ -1,4 +1,7 @@
-Curly.Path.containsPoint
-Curly.Canvas.Pattern
-createImageData
-drawImage
+Add support for Curly.Path.containsPoint
+Add support for Curly.Canvas.Pattern
+Add support for ImageData
+Add support for beforedraw and afterdraw methods
+Add support for a Curly.Font class to specify the font to write
+Add state support to Shape instances
+Add support for shadow
