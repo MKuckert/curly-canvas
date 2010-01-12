@@ -28,11 +28,11 @@ Curly.extendClass(Curly.Gradient.Linear, Curly.Gradient, {
 	/**
 	 * @var float X coordinate of the end point.
 	 */
-	x1: 1,
+	x1: 100,
 	/**
 	 * @var float Y coordinate of the end point.
 	 */
-	y1: 1,
+	y1: 100,
 	/**
 	 * Sets the position of the end point by the given line length and angle
 	 * relative to the start point.

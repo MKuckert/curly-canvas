@@ -17,3 +17,4 @@ Curly/Gradient.js
 Curly/Gradient/Linear.js
 Curly/Gradient/Radial.js
 Curly/Smiley.js
+Curly/Text.js

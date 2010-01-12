@@ -135,6 +135,9 @@ Curly.Canvas=function(source) {
 		ctx.shadowColor=s.shadowColor;
 		ctx.strokeStyle=determineStyle(s.strokeStyle);
 		ctx.fillStyle=determineStyle(s.fillStyle);
+		ctx.font=s.font;
+		ctx.textAlign=s.textAlign;
+		ctx.textBaseline=s.textBaseline;
 	};
 	
 	/**
@@ -253,26 +256,14 @@ Curly.Canvas=function(source) {
 	 * Removes the current state from the state stack.
 	 * 
 	 * @return Curly.Canvas.State or undefined if the stack is empty.
+	 * @param Integer Number of states to remove
 	 */
-	this.popState=function() {
-		return stateStack.pop();
-	};
-	
-	/**
-	 * Removes the top i states from the state stack. If no parameter is given the stack will be completely flushed.
-	 * 
-	 * @return Curly.Canvas
-	 * @param integer
-	 */
-	this.popStates=function(i) {
-		if(i===undefined) {
-			stateStack=[];
+	this.popState=function(n) {
+		var state;
+		for(var i=0, n=n||1; i<n; i++) {
+			state=stateStack.pop();
 		}
-		else {
-			stateStack.splice(stateStack.length-i, i);
-		}
-		
-		return this;
+		return state;
 	};
 	
 	/**
@@ -321,13 +312,13 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Gibt die Bilddaten dieser Zeichenfl�che als ImageData-Objekt zur�ck.
+	 * Returns the image data of this canvas as an ImageData object.
 	 * 
 	 * @return ImageData
-	 * @param integer X-Koordinate f�r die Bilddatenr�ckgabe.
-	 * @param integer Y-Koordinate f�r die Bilddatenr�ckgabe.
-	 * @param integer Breite der Bilddatenr�ckgabe.
-	 * @param integer H�he der Bilddatenr�ckgabe.
+	 * @param integer X coordinate for the image clip. Defaults to 0
+	 * @param integer Y coordinate for the image clip. Defaults to 0
+	 * @param integer Width of the image clip. Defaults to the full width
+	 * @param integer Height of the image clip. Defaults to the full height
 	 */
 	this.getImageData=function(x, y, w, h) {
 		if(x===undefined) {
@@ -347,22 +338,21 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Zeichnet das �bergebene Element auf dieses Canvas-Element.
+	 * Draws the given element into the canvas element.
 	 * 
 	 * @return void
 	 * @param HtmlImageElement|HtmlCanvasElement|HtmlVideoElement
-	 * @param integer Quell-Breite
-	 * @param integer Quell-H�he
-	 * @param integer Quell-X-Koordinate
-	 * @param integer Quell-Y-Koordinate
-	 * @param integer Ziel-X-Koordinate
-	 * @param integer Ziel-Y-Koordinate
-	 * @param integer Ziel-Breite
-	 * @param integer Ziel-H�he
+	 * @param integer Source width
+	 * @param integer Source height
+	 * @param integer Source x coordinate
+	 * @param integer Source y coordinate
+	 * @param integer Target x coordinate
+	 * @param integer Target y coordinate
+	 * @param integer Target width
+	 * @param integer Target height
 	 * @internal
 	 */
-	this.drawImage=function(el, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
-		// Nur Integer-Transformation vornehmen, damit es zu keinen unsch�nen Verschiebungen kommt
+	var drawImage=function(el, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
 		var tmp=this.useIntCorrection;
 		this.useIntCorrection=true;
 		this.applyState();
@@ -374,20 +364,20 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Kopiert die �bergebenen Bilddaten in dieses Bild.
+	 * Copies the given image data into this canvas.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas
 	 * @param ImageData|Curly.Canvas|CanvasRenderingContext2D
-	 * @param integer Ziel-X-Koordinate
-	 * @param integer Ziel-Y-Koordinate
-	 * @param integer Quell-X-Koordinate
-	 * @param integer Quell-Y-Koordinate
-	 * @param integer Quell-Breite
-	 * @param integer Quell-H�he
+	 * @param integer Target x coordinate. Defaults to 0
+	 * @param integer Target y coordinate. Defaults to 0
+	 * @param integer Source x coordinate. Defaults to 0
+	 * @param integer Source y coordinate. Defaults to 0
+	 * @param integer Source width. Defaults to the width of the element
+	 * @param integer Source height. Defaults to the height of the element
 	 */
 	this.copy=function(data, dstX, dstY, srcX, srcY, srcW, srcH) {
-		// Standardparameter setzen
+		// set defaults
 		if(srcX===undefined) {
 			srcX=0;
 		}
@@ -401,7 +391,7 @@ Curly.Canvas=function(source) {
 			dstY=0;
 		}
 		
-		// Canvas oder RenderingContext
+		// Canvas or RenderingContext
 		var isCanvas=(data instanceof Curly.Canvas);
 		var isContext=(data instanceof CanvasRenderingContext2D);
 		if(isCanvas || isContext || data instanceof Element) {
@@ -425,7 +415,7 @@ Curly.Canvas=function(source) {
 				srcH=elH ? elH : el.height;
 			}
 			
-			this.drawImage(
+			drawImage(
 				el,
 				srcX, srcY, srcW, srcH,
 				dstX, dstY, srcW, srcH
@@ -447,22 +437,22 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Kopiert die �bergebenen Bilddaten skaliert in dieses Bild.
+	 * Copies the given image data scaled into this canvas.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas
 	 * @param Curly.Canvas|CanvasRenderingContext2D
-	 * @param integer Ziel-X-Koordinate
-	 * @param integer Ziel-Y-Koordinate
-	 * @param integer Quell-X-Koordinate
-	 * @param integer Quell-Y-Koordinate
-	 * @param integer Ziel-Breite
-	 * @param integer Ziel-H�he
-	 * @param integer Quell-Breite
-	 * @param integer Quell-H�he
+	 * @param integer Target x coordinate. Defaults to 0
+	 * @param integer Target y coordinate. Defaults to 0
+	 * @param integer Source x coordinate. Defaults to 0
+	 * @param integer Source y coordinate. Defaults to 0
+	 * @param integer Target width. Defaults to the full width
+	 * @param integer Target height. Defaults to the full height
+	 * @param integer Source width. Defaults to the width of the element
+	 * @param integer Source height. Defaults to the height of the element
 	 */
 	this.copyResized=function(data, dstX, dstY, srcX, srcY, dstW, dstH, srcW, srcH) {
-		// Standardparameter setzen
+		// set defaults
 		if(srcX===undefined) {
 			srcX=0;
 		}
@@ -496,7 +486,7 @@ Curly.Canvas=function(source) {
 			srcH=el.height;
 		}
 		
-		this.drawImage(
+		drawImage(
 			el,
 			srcX, srcY, srcW, srcH,
 			dstX, dstY, dstW, dstH
@@ -506,7 +496,7 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Verwirft alle gezeichneten Daten dieses Canvas.
+	 * Removes any drawn data from this canvas.
 	 * 
 	 * @return Curly.Canvas
 	 */
@@ -522,11 +512,11 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Erstellt ein neues Pfad-Objekt.
+	 * Creates a new Path object. It's referenced with this canvas object.
 	 * 
 	 * @return Curly.Path
-	 * @param integer X-Position f�r den Startpunkt des Pfades
-	 * @param integer X-Position f�r den Endpunkt des Pfades
+	 * @param integer X coordinate for the start point of the path
+	 * @param integer Y coordinate for the start point of the path
 	 */
 	this.path=function(x, y) {
 		var p=new Curly.Path(x, y);
@@ -535,11 +525,11 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Erstellt ein neues zustands�nderndes Pfad-Objekt.
+	 * Creates a new StatefulPath object. It's referenced with this canvas object.
 	 * 
 	 * @return Curly.StatefulPath
-	 * @param integer X-Position f�r den Startpunkt des Pfades
-	 * @param integer X-Position f�r den Endpunkt des Pfades
+	 * @param integer X coordinate for the start point of the path
+	 * @param integer Y coordinate for the start point of the path
 	 */
 	this.statefulPath=function(x, y) {
 		var p=new Curly.StatefulPath(x, y);
@@ -548,7 +538,7 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Zeichnet das �bergebene Objekt auf dieses Canvas-Objekt.
+	 * Draws the given Drawable object to this canvas.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas
@@ -566,7 +556,7 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Setzt Clipping Region auf die �bergebene Shape-Instanz.
+	 * Sets the clipping region to the given Shape instance.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas
@@ -577,7 +567,7 @@ Curly.Canvas=function(source) {
 			throw new Curly.Canvas.Error('The given object is no shape object');
 		}
 		
-		// Alten Zustand wiederherstellen, um Clipping Region zu verwerfen
+		// Restore old state to remove any actually active clipping region
 		ctx.restore();
 		ctx.save();
 		
@@ -585,12 +575,12 @@ Curly.Canvas=function(source) {
 		this.useCorrection=false;
 		setState();
 		
-		// Pfad zeichen
+		// Draw the shape
 		if(!(shape instanceof Curly.Path)) {
 			shape=shape.getPath(this);
 		}
 		
-		shape.draw(false, false);	// false f�r Zeichnen ohne F�llung und Rahmen
+		shape.draw(false, false);	// false to just apply the path and don't render anything
 		ctx.clip();
 		
 		this.useCorrection=tmp;
@@ -600,7 +590,7 @@ Curly.Canvas=function(source) {
 	};
 	
 	/**
-	 * Weitet Clipping Region auf das gesamte Canvas-Objekt aus.
+	 * Expands the current clipping region to the whole canvas instance.
 	 * 
 	 * @throws Curly.Canvas.Error
 	 * @return Curly.Canvas

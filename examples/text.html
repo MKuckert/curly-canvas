@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Canvas</title>
+		<script type="text/javascript" src="../build/dist.js"></script>
+	</head>
+	<body>
+		<canvas id="c" width="300" height="150"></canvas>
+		<script type="text/javascript">//<![CDATA[
+var canvas, ctx;
+window.onload = function() {
+try {
+	var el=document.getElementById('c');
+	canvas=new Curly.Canvas(el);
+	el.style.border='1px solid #AAA';
+	el.style.position='absolute';
+	el.style.left='50%';
+	el.style.marginLeft=-(canvas.getWidth()>>1)+'px';
+	el.style.marginTop=canvas.getHeight()+'px';
+	
+	var text=new Curly.Text(10, 10, "Hey ho, Hello World!");
+	canvas.draw(text);
+	
+	text.moveTo(10, 35);
+	canvas.overwriteState({
+		font:		'20pt Arial',
+		fillStyle:	new Curly.Gradient.Linear({
+			x1: 300,
+			y1: 0,
+			stops: [
+				[0, 'red'],
+				[0.5, 'yellow'],
+				[1, 'blue']
+			]
+		})
+	});
+	canvas.draw(text);
+	
+	text.moveTo(10, 80);
+	canvas.overwriteState({
+		fillStyle:	new Curly.Gradient.Radial({
+			x: 120,
+			y: 80,
+			r: 100,
+			stops: [
+				[0, 'red'],
+				[0.5, 'yellow'],
+				[1, 'blue']
+			]
+		}),
+		rotate:		Math.PI/10,
+		translateX:	15,
+		translateY: -25
+	});
+	canvas.draw(text);
+	
+	canvas.popState(2);
+	
+	text.moveTo(10, 120);
+	var w=text.measureWidth(canvas);
+	canvas.
+		overwriteState('textBaseline', Curly.Canvas.State.BASELINE_TOP).
+		path(text.x, text.y).
+		rect(w, 10).
+		draw(false);
+	
+	canvas.draw(text);
+	
+	ctx=canvas.getCtx()
+}
+catch(e) {
+	console.log(e);
+}
+}
+//		]]></script>
+	</body>
+</html>
