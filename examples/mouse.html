@@ -5,8 +5,10 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>Canvas</title>
 		<script type="text/javascript" src="../build/dist.js"></script>
+		<!--[if IE]><script src="../excanvas/excanvas.js"></script><![endif]-->
 	</head>
 	<body>
+		<h1>Click on the canvas</h1>
 		<canvas id="c" width="400" height="300"></canvas>
 		<script type="text/javascript">//<![CDATA[
 var canvas, ctx, touches=[];
@@ -23,13 +25,18 @@ window.onload = function() {
 		
 		ctx=canvas.getCtx();
 		
-		el.addEventListener('click', onClick, true);
-		el.addEventListener('touchend', onClick, true);
+		if(el.addEventListener) {
+			el.addEventListener('click', onClick, true);
+			el.addEventListener('touchend', onClick, true); // Support for iPhone/iPod Touch
+		}
+		else {
+			el.attachEvent('onclick', onClick);
+		}
 		
 		setInterval(draw, 50);
 	}
 	catch(e) {
-		console.log(e);
+		alert(e);
 	}
 }
 
@@ -42,14 +49,15 @@ function addTouch(x, y){
 }
 
 function onClick(event){
+	event=event||window.event;
 	var x, y;
 	if(event.touches) {
 		for(var i=0, n=event.touches.length; i<n; i++) {
 			addTouch(event.touches[i].pageX, event.touches[i].pageY);
 		}
 	}
-	else if(event) {
-		addTouch(event.layerX, event.layerY);
+	else if(event.layerX!==undefined) {
+		addTouch(event.layerX-event.target.offsetLeft, event.layerY-event.target.offsetTop);
 	}
 	else {
 		addTouch(event.offsetX, event.offsetY);
@@ -71,7 +79,7 @@ function draw() {
 				[1, 'rgba(255, 0, 0, 0)']
 			]
 		});
-		//console.log(gradient.stops[0][1]);
+		//alert(gradient.stops[0][1]);
 		
 		canvas.
 			overwriteState('fillStyle', gradient).
