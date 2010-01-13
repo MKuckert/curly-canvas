@@ -1,0 +1,38 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.Pixel"></div>/**
+ * Represents a single pixel.
+ * 
+ * @class Curly.Pixel
+ * @extends Curly.Shape
+ */
+<div id="method-Curly.Pixel-Pixel"></div>/**
+ * @constructor
+ * @param integer X-Position
+ * @param integer Y-Position
+ */
+Curly.Pixel=function(x, y) {
+	Curly.Pixel.superclass.constructor.call(this, x, y);
+	
+	<div id="method-Curly.Pixel-getPath"></div>/** 
+	 * Returns this instance as a Curly.Path object.
+	 * 
+	 * @return Curly.Path
+	 * @param Curly.Canvas
+	 */
+	this.getPath=function(canvas) {
+		return canvas
+			.path(this.x, this.y)
+			.dot();
+	};
+};
+Curly.extendClass(Curly.Pixel, Curly.Shape);
+</pre>    
+</body>
+</html>

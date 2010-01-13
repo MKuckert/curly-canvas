@@ -1,0 +1,48 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.Shape"></div>/**
+ * Represents a drawable object which can be specified by a Curly.Path object.
+ * 
+ * @class Curly.Shape
+ * @extends Curly.Drawable
+ */
+<div id="method-Curly.Shape-Shape"></div>/**
+ * @constructor
+ * @param integer X-Position
+ * @param integer Y-Position
+ */
+Curly.Shape=function(x, y) {
+	Curly.Shape.superclass.constructor.call(this, x, y);
+};
+Curly.extendClass(Curly.Shape, Curly.Drawable, {
+	<div id="method-Curly.Shape-getPath"></div>/** 
+	 * Returns this instance as a Curly.Path object. The returned instance has
+	 * to be associated with the given canvas object.
+	 * 
+	 * @return Curly.Path
+	 * @param Curly.Canvas
+	 */
+	getPath: function(canvas) {},
+	<div id="method-Curly.Shape-draw"></div>/**
+	 * Draws this object.
+	 * 
+	 * @return void
+	 * @param CanvasRenderingContext2D
+	 * @param Curly.Canvas
+	 */
+	draw: function(context, canvas) {
+		var path=this.getPath(canvas);
+		path.drawFill=this.drawFill;
+		path.drawStroke=this.drawStroke;
+		canvas.draw(path);
+	}
+});
+</pre>    
+</body>
+</html>

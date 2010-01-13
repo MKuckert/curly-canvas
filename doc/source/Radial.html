@@ -1,0 +1,90 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.Gradient.Radial"></div>/**
+ * Represents a radial color gradient.
+ * 
+ * @class Curly.Gradient.Radial
+ * @extends Curly.Gradient
+ */
+<div id="method-Curly.Gradient.Radial-Gradient.Radial"></div>/**
+ * @constructor
+ * @param Array
+ */
+Curly.Gradient.Radial=function(stops) {
+	if(typeof stops==='object') {
+		if(stops.x) {
+			stops.x0=stops.x1=stops.x;
+			delete stops.x;
+		}
+		if(stops.y) {
+			stops.y0=stops.y1=stops.y;
+			delete stops.y;
+		}
+		if(stops.r) {
+			stops.r1=stops.r;
+			delete stops.r;
+		}
+		Curly.extend(this, stops);
+		stops=stops.stops;
+	}
+	Curly.Gradient.Radial.superclass.constructor.call(this, stops);
+};
+Curly.extendClass(Curly.Gradient.Radial, Curly.Gradient, {
+	<div id="prop-Curly.Gradient.Radial-x0"></div>/**
+	 * X coordinate of the center of the inner circle.
+	 * @property x0
+	 * @type float
+	 */
+	x0: 0,
+	<div id="prop-Curly.Gradient.Radial-y0"></div>/**
+	 * Y coordinate of the center of the inner circle.
+	 * @property y0
+	 * @type float
+	 */
+	y0: 0,
+	<div id="prop-Curly.Gradient.Radial-r0"></div>/**
+	 * Radius of the inner circle
+	 * @property r0
+	 * @type float
+	 */
+	r0: 0,
+	<div id="prop-Curly.Gradient.Radial-x1"></div>/**
+	 * X coordinate of the center of the outer circle.
+	 * @property x1
+	 * @type float
+	 */
+	x1: 0,
+	<div id="prop-Curly.Gradient.Radial-y1"></div>/**
+	 * Y coordinate of the center of the outer circle.
+	 * @property y1
+	 * @type float
+	 */
+	y1: 0,
+	<div id="prop-Curly.Gradient.Radial-r1"></div>/**
+	 * Radius of the outer circle
+	 * @property r1
+	 * @type float
+	 */
+	r1: 100,
+	<div id="method-Curly.Gradient.Radial-createGradient"></div>/**
+	 * Creates a gradient object for the given rendering context
+	 * 
+	 * @return CanvasGradient
+	 * @param CanvasRenderingContext2D
+	 * @param Curly.Canvas
+	 */
+	createGradient: function(context, canvas) {
+		var gr=context.createRadialGradient(this.x0, this.y0, this.r0, this.x1, this.y1, this.r1);
+		this.applyColorStops(gr);
+		return gr;
+	}
+});
+</pre>    
+</body>
+</html>

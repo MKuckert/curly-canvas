@@ -1,0 +1,86 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.Bezier"></div>/**
+ * Represents as bezier curve
+ * 
+ * @class Curly.Bezier
+ * @extends Curly.Shape
+ */
+<div id="method-Curly.Bezier-Bezier"></div>/**
+ * @constructor
+ * @param integer X coordinate of the start point
+ * @param integer Y coordinate of the start point
+ * @param integer X coordinate of the end point
+ * @param integer Y coordinate of the end point
+ * @param integer X coordinate of the first anchor point
+ * @param integer Y coordinate of the first anchor point
+ * @param integer X coordinate of the second anchor point
+ * @param integer Y coordinate of the second anchor point
+ */
+Curly.Bezier=function(x0, y0, x1, y1, cp1x, cp1y, cp2x, cp2y) {
+	Curly.Bezier.superclass.constructor.call(this, x0, y0);
+	
+	<div id="prop-Curly.Bezier-x1"></div>/**
+	 * X coordinate of the end point
+	 * @property x1
+	 * @type integer
+	 */
+	this.x1=x1 || 0;
+	
+	<div id="prop-Curly.Bezier-y1"></div>/**
+	 * Y coordinate of the end point
+	 * @property y1
+	 * @type integer
+	 */
+	this.y1=y1 || 0;
+	
+	<div id="prop-Curly.Bezier-cp1x"></div>/**
+	 * X coordinate of the first anchor point
+	 * @property cp1x
+	 * @type integer
+	 */
+	this.cp1x=cp1x || 0;
+	
+	<div id="prop-Curly.Bezier-cp1y"></div>/**
+	 * Y coordinate of the first anchor point
+	 * @property cp1y
+	 * @type integer
+	 */
+	this.cp1y=cp1y || 0;
+	
+	<div id="prop-Curly.Bezier-cp2x"></div>/**
+	 * X coordinate of the second anchor point
+	 * @property cp2x
+	 * @type integer
+	 */
+	this.cp2x=cp2x || 0;
+	
+	<div id="prop-Curly.Bezier-cp2y"></div>/**
+	 * Y coordinate of the second anchor point
+	 * @property cp2y
+	 * @type integer
+	 */
+	this.cp2y=cp2y || 0;
+	
+	<div id="method-Curly.Bezier-getPath"></div>/** 
+	 * Returns this instance as a Curly.Path object.
+	 * 
+	 * @return Curly.Path
+	 * @param Curly.Canvas
+	 */
+	this.getPath=function(canvas) {
+		return canvas
+			.path(this.x, this.y)
+			.bezier(this.cp1x, this.cp1y, this.cp2x, this.cp2y, this.x1, this.y1);
+	};
+};
+Curly.extendClass(Curly.Bezier, Curly.Shape);
+</pre>    
+</body>
+</html>

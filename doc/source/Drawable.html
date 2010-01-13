@@ -1,0 +1,79 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.Drawable"></div>/**
+ * Represents a drawable object. It implements the draw method to perform a draw
+ * operation on a canvas object.
+ * 
+ * @class Curly.Drawable
+ */
+<div id="method-Curly.Drawable-Drawable"></div>/**
+ * @constructor
+ * @param integer X coordinate
+ * @param integer Y coordinate
+ */
+Curly.Drawable=function(x, y) {
+	<div id="prop-Curly.Drawable-x"></div>/**
+	 * X coordinate
+	 * @property x
+	 * @type integer
+	 */
+	this.x=x || 0;
+	
+	<div id="prop-Curly.Drawable-y"></div>/**
+	 * Y coordinate
+	 * @property y
+	 * @type integer
+	 */
+	this.y=y || 0;
+};
+Curly.extendClass(Curly.Drawable, Object, {
+	<div id="prop-Curly.Drawable-drawFill"></div>/**
+	 * Flag, if this object should draw a filling.
+	 * @property drawFill
+	 * @type boolean
+	 */
+	drawFill: true,
+	<div id="prop-Curly.Drawable-drawStroke"></div>/**
+	 * Flag, if this object should draw a border line.
+	 * @property drawStroke
+	 * @type boolean
+	 */
+	drawStroke: true,
+	<div id="method-Curly.Drawable-getXY"></div>/**
+	 * Returns the x and y coordinate of this object as an array.
+	 * 
+	 * @return Array
+	 */
+	getXY: function() {
+		return [this.x, this.x];
+	},
+	<div id="method-Curly.Drawable-moveTo"></div>/**
+	 * Sets the x and y coordinate of this object with an array value.
+	 * 
+	 * @return Curly.Drawable
+	 * @param integer X-Position
+	 * @param integer Y-Position
+	 */
+	moveTo: function(x, y) {
+		this.x=x;
+		this.y=y;
+		return this;
+	},
+	<div id="method-Curly.Drawable-draw"></div>/** 
+	 * Draws this object to the given canvas object
+	 * 
+	 * @return void
+	 * @param CanvasRenderingContext2D
+	 * @param Curly.Canvas
+	 */
+	draw: function(context, canvas) {}
+});
+</pre>    
+</body>
+</html>

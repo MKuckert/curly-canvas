@@ -1,0 +1,31 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.ArcLine"></div>/**
+ * Represents an arc of a circle without a filling.
+ * 
+ * @class Curly.ArcLine
+ * @extends Curly.Arc
+ */
+<div id="method-Curly.ArcLine-ArcLine"></div>/**
+ * @constructor
+ * @param integer X coordinate
+ * @param integer Y coordinate
+ * @param integer Radius
+ * @param float The start angle
+ * @param float The end angle
+ * @param boolean Flag if the arc should be drawn counter-clockwise
+ */
+Curly.ArcLine=function(x, y, r, sa, ea, acw) {
+	Curly.ArcLine.superclass.constructor.apply(this, arguments);
+	this.drawFill=false;
+};
+Curly.extendClass(Curly.ArcLine, Curly.Arc);
+</pre>    
+</body>
+</html>
