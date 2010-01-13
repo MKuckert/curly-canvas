@@ -53,6 +53,7 @@ Curly.extendClass(Curly.Text, Curly.Drawable, {
 	/**
 	 * Measures the width of this object in the given canvas object if rendered.
 	 * 
+	 * @throws Curly.Canvas.Error
 	 * @return float
 	 * @param Curly.Canvas
 	 */
