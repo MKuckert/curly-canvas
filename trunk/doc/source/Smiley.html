@@ -1,0 +1,69 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.Smiley"></div>/**
+ * Draws a smiley
+ * 
+ * @class Curly.Smiley
+ * @extends Curly.Shape
+ */
+<div id="method-Curly.Smiley-Smiley"></div>/**
+ * @constructor
+ * @param integer X-Position
+ * @param integer Y-Position
+ * @param Object Additional configurations
+ */
+Curly.Smiley=function(x, y, config) {
+	Curly.Smiley.superclass.constructor.apply(this, arguments);
+	Curly.extend(this, config);
+};
+Curly.extendClass(Curly.Smiley, Curly.Shape, {
+	<div id="prop-Curly.Smiley-mainColor"></div>/**
+	 * Main color of the smiley
+	 * @property mainColor
+	 * @type String
+	 */
+	mainColor: 'yellow',
+	<div id="prop-Curly.Smiley-borderColor"></div>/**
+	 * Color of the border
+	 * @property borderColor
+	 * @type String
+	 */
+	borderColor: 'black',
+	<div id="method-Curly.Smiley-getPath"></div>/** 
+	 * Returns this instance as a Curly.Path object.
+	 * 
+	 * @return Curly.Path
+	 * @param Curly.Canvas
+	 */
+	getPath: function(canvas) {
+		return canvas.
+			statefulPath().
+			setState({
+				lineWidth:		1,
+				fillStyle:		this.mainColor,
+				strokeStyle:	this.borderColor
+			}).
+			add(new Curly.Arc(150, 75, 50)).
+			setState('fillStyle', 'black').
+			add(new Curly.Arc(130, 60, 10)).
+			add(new Curly.Arc(170, 60, 10)).
+			setState({
+				fillStyle:		Curly.Transparent,
+				strokeStyle:	'red',
+				lineWidth:		2
+			}).
+			add(new Curly.Bezier(120, 90, 180, 90, 130, 115, 170, 115)).
+			setState({
+				lineWidth:		1
+			});
+	}
+});
+</pre>    
+</body>
+</html>

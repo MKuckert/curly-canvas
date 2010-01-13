@@ -1,0 +1,71 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.QuadCurve"></div>/**
+ * Represents a quadratic curve
+ * 
+ * @class Curly.QuadCurve
+ * @extends Curly.Shape
+ */
+<div id="method-Curly.QuadCurve-QuadCurve"></div>/**
+ * @constructor
+ * @param integer X coordinate of the start point
+ * @param integer Y coordinate of the start point
+ * @param integer X coordinate of the end point
+ * @param integer Y coordinate of the end point
+ * @param integer X coordinate of the anchor point
+ * @param integer Y coordinate of the anchor point
+ */
+Curly.QuadCurve=function(x0, y0, x1, y1, cpx, cpy) {
+	Curly.QuadCurve.superclass.constructor.call(this, x0, y0);
+	
+	<div id="prop-Curly.QuadCurve-x1"></div>/**
+	 * X coordinate of the end point
+	 * @property x1
+	 * @type integer
+	 */
+	this.x1=x1 || 0;
+	
+	<div id="prop-Curly.QuadCurve-y1"></div>/**
+	 * Y coordinate of the end point
+	 * @property y1
+	 * @type integer
+	 */
+	this.y1=y1 || 0;
+	
+	<div id="prop-Curly.QuadCurve-cpx"></div>/**
+	 * X coordinate of the anchor point
+	 * @property cpx
+	 * @type integer
+	 */
+	this.cpx=cpx || 0;
+	
+	<div id="prop-Curly.QuadCurve-cpy"></div>/**
+	 * Y coordinate of the anchor point
+	 * @property cpy
+	 * @type integer
+	 */
+	this.cpy=cpy || 0;
+	
+	<div id="method-Curly.QuadCurve-getPath"></div>/**
+	 * Returns this instance as a Curly.Path object.
+	 * 
+	 * @return Curly.Path
+	 * @param Curly.Canvas
+	 */
+	this.getPath=function(canvas) {
+		return canvas
+			.path()
+			.moveTo(this.x, this.y)
+			.quadCurve(this.cpx, this.cpy, this.x1, this.y1);
+	};
+};
+Curly.extendClass(Curly.QuadCurve, Curly.Shape);
+</pre>    
+</body>
+</html>

@@ -1,0 +1,203 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.Canvas.State"></div>/**
+ * @class Curly.Canvas.State
+ */
+<div id="method-Curly.Canvas.State-Canvas.State"></div>/**
+ * @constructor
+ * @param Object State configurations
+ */
+Curly.Canvas.State=function(config) {
+	Curly.extend(this, Curly.Canvas.State.DEFAULTS, config||{});
+};
+<div id="prop-Curly.Canvas.State-IDENTITY_MATRIX"></div>/**
+ * @final
+ * @type Array
+ */
+Curly.Canvas.State.IDENTITY_MATRIX=[1,0,0,1,0,0];
+<div id="prop-Curly.Canvas.State-OP_SOURCE_OVER"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_SOURCE_OVER='source-over';
+<div id="prop-Curly.Canvas.State-OP_SOURCE_IN"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_SOURCE_IN='source-in';
+<div id="prop-Curly.Canvas.State-OP_SOURCE_OUT"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_SOURCE_OUT='source-out';
+<div id="prop-Curly.Canvas.State-OP_SOURCE_atop"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_SOURCE_atop='source-atop';
+<div id="prop-Curly.Canvas.State-OP_DESTINATION_OVER"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_DESTINATION_OVER='destination-over';
+<div id="prop-Curly.Canvas.State-OP_DESTINATION_IN"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_DESTINATION_IN='destination-in';
+<div id="prop-Curly.Canvas.State-OP_DESTINATION_OUT"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_DESTINATION_OUT='destination-out';
+<div id="prop-Curly.Canvas.State-OP_DESTINATION_atop"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_DESTINATION_atop='destination-atop';
+<div id="prop-Curly.Canvas.State-OP_LIGHTER"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_LIGHTER='lighter';
+<div id="prop-Curly.Canvas.State-OP_COPY"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_COPY='copy';
+<div id="prop-Curly.Canvas.State-OP_XOR"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.OP_XOR='xor';
+<div id="prop-Curly.Canvas.State-CAP_BUTT"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.CAP_BUTT='butt';
+<div id="prop-Curly.Canvas.State-CAP_ROUND"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.CAP_ROUND='round';
+<div id="prop-Curly.Canvas.State-CAP_SQUARE"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.CAP_SQUARE='square';
+<div id="prop-Curly.Canvas.State-JOIN_ROUND"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.JOIN_ROUND='round';
+<div id="prop-Curly.Canvas.State-JOIN_BEVEL"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.JOIN_BEVEL='bevel';
+<div id="prop-Curly.Canvas.State-JOIN_MITER"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.JOIN_MITER='miter';
+<div id="prop-Curly.Canvas.State-ALIGN_START"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.ALIGN_START='start';
+<div id="prop-Curly.Canvas.State-ALIGN_END"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.ALIGN_END='end';
+<div id="prop-Curly.Canvas.State-ALIGN_LEFT"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.ALIGN_LEFT='left';
+<div id="prop-Curly.Canvas.State-ALIGN_RIGHT"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.ALIGN_RIGHT='right';
+<div id="prop-Curly.Canvas.State-ALIGN_CENTER"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.ALIGN_CENTER='center';
+<div id="prop-Curly.Canvas.State-BASELINE_TOP"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.BASELINE_TOP='top';
+<div id="prop-Curly.Canvas.State-BASELINE_HANGING"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.BASELINE_HANGING='hanging';
+<div id="prop-Curly.Canvas.State-BASELINE_MIDDLE"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.BASELINE_MIDDLE='middle';
+<div id="prop-Curly.Canvas.State-BASELINE_ALPHABETIC"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.BASELINE_ALPHABETIC='alphabetic';
+<div id="prop-Curly.Canvas.State-BASELINE_IDEOGRAPHIC"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.BASELINE_IDEOGRAPHIC='ideographic';
+<div id="prop-Curly.Canvas.State-BASELINE_BOTTOM"></div>/**
+ * @final
+ * @type String
+ */
+Curly.Canvas.State.BASELINE_BOTTOM='bottom';
+<div id="prop-Curly.Canvas.State-DEFAULTS"></div>/**
+ * @final
+ * @type Object Default state configurations
+ */
+Curly.Canvas.State.DEFAULTS={
+	scaleX:				1.0,
+	scaleY:				1.0,
+	rotate:				0,
+	translateX:			0,
+	translateY:			0,
+	transform:			null,
+	compositeOperation:	Curly.Canvas.State.OP_SOURCE_OVER,
+	lineWidth:			1.0,
+	lineCap:			Curly.Canvas.State.CAP_BUTT,
+	lineJoin:			Curly.Canvas.State.JOIN_ROUND,
+	miterLimit:			10,
+	alpha:				1.0,
+	strokeStyle:		'black',
+	fillStyle:			'black',
+	shadowOffsetX:		0.0,
+	shadowOffsetY:		0.0,
+	shadowBlur:			0.0,
+	shadowColor:		'black',
+	font:				'10px sans-serif',
+	textAlign:			Curly.Canvas.State.ALIGN_START,
+	textBaseline:		Curly.Canvas.State.BASELINE_ALPHABETIC
+};
+<div id="prop-Curly.Canvas.State-COLOR_TRANSPARENT"></div>/**
+ * @final
+ * @type String Constant value for a totally transparent color
+ */
+Curly.Canvas.State.COLOR_TRANSPARENT='rgba(0,0,0,0)';
+<div id="prop-Curly.Canvas.State-Transparent"></div>/**
+ * @final
+ * @type String Constant value for a totally transparent color
+ */
+Curly.Transparent='rgba(0,0,0,0)';
+</pre>    
+</body>
+</html>

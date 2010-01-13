@@ -1,0 +1,67 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+  <title>The source code</title>
+    <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+</head>
+<body  onload="prettyPrint();">
+    <pre class="prettyprint lang-js"><div id="cls-Curly.Rectangle"></div>/**
+ * Represents a rectangle.
+ * 
+ * @class Curly.Rectangle
+ * @extends Curly.Shape
+ */
+<div id="method-Curly.Rectangle-Rectangle"></div>/**
+ * @constructor
+ * @param integer X coordinate
+ * @param integer Y coordinate
+ * @param integer Width of this object
+ * @param integer Height of this object
+ */
+Curly.Rectangle=function(x, y, w, h) {
+	Curly.Rectangle.superclass.constructor.call(this, x, y);
+	
+	<div id="prop-Curly.Rectangle-w"></div>/**
+	 * Width of this object.
+	 * @property w
+	 * @type integer
+	 */
+	this.w=w || 0;
+	
+	<div id="prop-Curly.Rectangle-h"></div>/**
+	 * Height of this object
+	 * @property h
+	 * @type integer
+	 */
+	this.h=h || 0;
+	
+	<div id="method-Curly.Rectangle-resize"></div>/**
+	 * Sets the current height and width of this object
+	 * 
+	 * @return Curly.Shape
+	 * @param integer
+	 * @param integer
+	 */
+	this.resize=function(w, h) {
+		this.w=w;
+		this.h=h;
+		return this;
+	};
+	
+	<div id="method-Curly.Rectangle-getPath"></div>/** 
+	 * Returns this instance as a Curly.Path object.
+	 * 
+	 * @return Curly.Path
+	 * @param Curly.Canvas
+	 */
+	this.getPath=function(canvas) {
+		return canvas.
+			path(this.x, this.y).
+			rect(this.w, this.h);
+	};
+};
+Curly.extendClass(Curly.Rectangle, Curly.Shape);
+</pre>    
+</body>
+</html>
