@@ -48,33 +48,36 @@ Curly.Canvas=function(source) {
 	}
 	
 	/**
-	 * @var float Correcting for the x coordinate. Is applied to every canvas state.
+	 * Correcting for the x coordinate. Is applied to every canvas state.
 	 * This Correction is required for lines with a line thickness of one pixel so the
 	 * drawing operation is not blured by the antialiasing.
+	 * @property xCorrection
+	 * @type float
 	 */
 	this.xCorrection=0.5;
 	
 	/**
-	 * @var float Correcting for the y coordinate.
+	 * Correcting for the y coordinate.
+	 * @property yCorrection
+	 * @type float
 	 */
 	this.yCorrection=0.5;
 	
 	/**
-	 * @var boolean Flag if the coordinate correction should be applied.
+	 * Flag if the coordinate correction should be applied.
+	 * @property useCorrection
+	 * @type boolean
 	 */
 	this.useCorrection=true;
 	
 	/**
-	 * @var boolean Flag if the coordinate correction should only use integer values.
+	 * Flag if the coordinate correction should only use integer values.
+	 * @property useIntCorrection
+	 * @type boolean
 	 */
 	this.useIntCorrection=false;
 	
-	/**
-	 * Returns the drawing style to the given object.
-	 * 
-	 * @return Object
-	 * @param Object
-	 */
+	// private
 	var determineStyle=function(o) {
 		if(o instanceof Curly.Gradient) {
 			return o.createGradient(ctx, this);
@@ -84,11 +87,7 @@ Curly.Canvas=function(source) {
 		}
 	};
 	
-	/**
-	 * Applies the current state to the canvas.
-	 * 
-	 * @private
-	 */
+	// private
 	var setState=function() {
 		var s;
 		if(stateStack.length<=0) {
@@ -337,21 +336,7 @@ Curly.Canvas=function(source) {
 		return ctx.getImageData(x, y, w, h);
 	};
 	
-	/**
-	 * Draws the given element into the canvas element.
-	 * 
-	 * @return void
-	 * @param HtmlImageElement|HtmlCanvasElement|HtmlVideoElement
-	 * @param integer Source width
-	 * @param integer Source height
-	 * @param integer Source x coordinate
-	 * @param integer Source y coordinate
-	 * @param integer Target x coordinate
-	 * @param integer Target y coordinate
-	 * @param integer Target width
-	 * @param integer Target height
-	 * @internal
-	 */
+	// private
 	var drawImage=function(el, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
 		var tmp=this.useIntCorrection;
 		this.useIntCorrection=true;

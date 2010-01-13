@@ -19,32 +19,44 @@ Curly.Bezier=function(x0, y0, x1, y1, cp1x, cp1y, cp2x, cp2y) {
 	Curly.Bezier.superclass.constructor.call(this, x0, y0);
 	
 	/**
-	 * @var integer X coordinate of the end point
+	 * X coordinate of the end point
+	 * @property x1
+	 * @type integer
 	 */
 	this.x1=x1 || 0;
 	
 	/**
-	 * @var integer Y coordinate of the end point
+	 * Y coordinate of the end point
+	 * @property y1
+	 * @type integer
 	 */
 	this.y1=y1 || 0;
 	
 	/**
-	 * @var integer X coordinate of the first anchor point
+	 * X coordinate of the first anchor point
+	 * @property cp1x
+	 * @type integer
 	 */
 	this.cp1x=cp1x || 0;
 	
 	/**
-	 * @var integer Y coordinate of the first anchor point
+	 * Y coordinate of the first anchor point
+	 * @property cp1y
+	 * @type integer
 	 */
 	this.cp1y=cp1y || 0;
 	
 	/**
-	 * @var integer X coordinate of the second anchor point
+	 * X coordinate of the second anchor point
+	 * @property cp2x
+	 * @type integer
 	 */
 	this.cp2x=cp2x || 0;
 	
 	/**
-	 * @var integer Y coordinate of the second anchor point
+	 * Y coordinate of the second anchor point
+	 * @property cp2y
+	 * @type integer
 	 */
 	this.cp2y=cp2y || 0;
 	

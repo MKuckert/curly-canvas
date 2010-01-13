@@ -17,22 +17,30 @@ Curly.Arc=function(x, y, r, sa, ea, acw) {
 	Curly.Arc.superclass.constructor.call(this, x, y);
 	
 	/**
-	 * @var integer Radius
+	 * Radius
+	 * @property radius
+	 * @type integer
 	 */
 	this.radius=r || 0;
 	
 	/**
-	 * @var float The start angle
+	 * The start angle
+	 * @property startAngle
+	 * @type float
 	 */
 	this.startAngle=sa || 0;
 	
 	/**
-	 * @var float The end angle
+	 * The end angle
+	 * @property endAngle
+	 * @type float
 	 */
 	this.endAngle=ea===undefined ? Math.PI*2 : ea;
 	
 	/**
-	 * @var boolean Flag if the arc should be drawn counter-clockwise
+	 * Flag if the arc should be drawn counter-clockwise
+	 * @property antiClockwise
+	 * @type boolean
 	 */
 	this.antiClockwise=!!acw;
 	

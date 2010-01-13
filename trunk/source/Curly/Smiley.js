@@ -16,11 +16,15 @@ Curly.Smiley=function(x, y, config) {
 };
 Curly.extendClass(Curly.Smiley, Curly.Shape, {
 	/**
-	 * @var String Main color of the smiley
+	 * Main color of the smiley
+	 * @property mainColor
+	 * @type String
 	 */
 	mainColor: 'yellow',
 	/**
-	 * @var String Color of the border
+	 * Color of the border
+	 * @property borderColor
+	 * @type String
 	 */
 	borderColor: 'black',
 	/** 

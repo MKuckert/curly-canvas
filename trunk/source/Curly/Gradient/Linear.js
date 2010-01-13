@@ -18,19 +18,27 @@ Curly.Gradient.Linear=function(stops) {
 };
 Curly.extendClass(Curly.Gradient.Linear, Curly.Gradient, {
 	/**
-	 * @var float X coordinate of the start point.
+	 * X coordinate of the start point.
+	 * @property x0
+	 * @type float
 	 */
 	x0: 0,
 	/**
-	 * @var float Y coordinate of the start point.
+	 * Y coordinate of the start point.
+	 * @property y0
+	 * @type float
 	 */
 	y0: 0,
 	/**
-	 * @var float X coordinate of the end point.
+	 * X coordinate of the end point.
+	 * @property x1
+	 * @type float
 	 */
 	x1: 100,
 	/**
-	 * @var float Y coordinate of the end point.
+	 * Y coordinate of the end point.
+	 * @property y1
+	 * @type float
 	 */
 	y1: 100,
 	/**

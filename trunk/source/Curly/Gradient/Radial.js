@@ -29,27 +29,39 @@ Curly.Gradient.Radial=function(stops) {
 };
 Curly.extendClass(Curly.Gradient.Radial, Curly.Gradient, {
 	/**
-	 * @var float X coordinate of the center of the inner circle.
+	 * X coordinate of the center of the inner circle.
+	 * @property x0
+	 * @type float
 	 */
 	x0: 0,
 	/**
-	 * @var float Y coordinate of the center of the inner circle.
+	 * Y coordinate of the center of the inner circle.
+	 * @property y0
+	 * @type float
 	 */
 	y0: 0,
 	/**
-	 * @var float Radius of the inner circle
+	 * Radius of the inner circle
+	 * @property r0
+	 * @type float
 	 */
 	r0: 0,
 	/**
-	 * @var float X coordinate of the center of the outer circle.
+	 * X coordinate of the center of the outer circle.
+	 * @property x1
+	 * @type float
 	 */
 	x1: 0,
 	/**
-	 * @var float Y coordinate of the center of the outer circle.
+	 * Y coordinate of the center of the outer circle.
+	 * @property y1
+	 * @type float
 	 */
 	y1: 0,
 	/**
-	 * @var float Radius of the outer circle
+	 * Radius of the outer circle
+	 * @property r1
+	 * @type float
 	 */
 	r1: 100,
 	/**

@@ -15,12 +15,16 @@ Curly.Rectangle=function(x, y, w, h) {
 	Curly.Rectangle.superclass.constructor.call(this, x, y);
 	
 	/**
-	 * @var integer Width of this object.
+	 * Width of this object.
+	 * @property w
+	 * @type integer
 	 */
 	this.w=w || 0;
 	
 	/**
-	 * @var integer Height of this object
+	 * Height of this object
+	 * @property h
+	 * @type integer
 	 */
 	this.h=h || 0;
 	
