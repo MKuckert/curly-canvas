@@ -17,19 +17,27 @@ Curly.Path=function(x, y) {
 };
 Curly.extendClass(Curly.Path, Curly.Shape, {
 	/**
-	 * @var Curly.Canvas The referenced canvas object of this path
+	 * The referenced canvas object of this path
+	 * @property canvas
+	 * @type Curly.Canvas
 	 */
 	canvas: null,
 	/**
-	 * @var integer The last stored X coordinate of this object
+	 * The last stored X coordinate of this object
+	 * @property lastX
+	 * @type integer
 	 */
 	lastX: -1,
 	/**
-	 * @var integer The last stored Y coordinate of this object
+	 * The last stored Y coordinate of this object
+	 * @property lastY
+	 * @type integer
 	 */
 	lastY: -1,
 	/**
-	 * @var array Action stack of this path
+	 * Action stack of this path
+	 * @property comp
+	 * @type array
 	 */
 	comp: null,
 	/**

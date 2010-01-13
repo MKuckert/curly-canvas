@@ -11,22 +11,30 @@
  */
 Curly.Drawable=function(x, y) {
 	/**
-	 * @var integer X coordinate
+	 * X coordinate
+	 * @property x
+	 * @type integer
 	 */
 	this.x=x || 0;
 	
 	/**
-	 * @var integer Y coordinate
+	 * Y coordinate
+	 * @property y
+	 * @type integer
 	 */
 	this.y=y || 0;
 };
 Curly.extendClass(Curly.Drawable, Object, {
 	/**
-	 * @var boolean Flag, if this object should draw a filling.
+	 * Flag, if this object should draw a filling.
+	 * @property drawFill
+	 * @type boolean
 	 */
 	drawFill: true,
 	/**
-	 * @var boolean Flag, if this object should draw a border line.
+	 * Flag, if this object should draw a border line.
+	 * @property drawStroke
+	 * @type boolean
 	 */
 	drawStroke: true,
 	/**

@@ -108,33 +108,36 @@ Curly.Canvas=function(source) {
 	}
 	
 	/**
-	 * @var float Correcting for the x coordinate. Is applied to every canvas state.
+	 * Correcting for the x coordinate. Is applied to every canvas state.
 	 * This Correction is required for lines with a line thickness of one pixel so the
 	 * drawing operation is not blured by the antialiasing.
+	 * @property xCorrection
+	 * @type float
 	 */
 	this.xCorrection=0.5;
 	
 	/**
-	 * @var float Correcting for the y coordinate.
+	 * Correcting for the y coordinate.
+	 * @property yCorrection
+	 * @type float
 	 */
 	this.yCorrection=0.5;
 	
 	/**
-	 * @var boolean Flag if the coordinate correction should be applied.
+	 * Flag if the coordinate correction should be applied.
+	 * @property useCorrection
+	 * @type boolean
 	 */
 	this.useCorrection=true;
 	
 	/**
-	 * @var boolean Flag if the coordinate correction should only use integer values.
+	 * Flag if the coordinate correction should only use integer values.
+	 * @property useIntCorrection
+	 * @type boolean
 	 */
 	this.useIntCorrection=false;
 	
-	/**
-	 * Returns the drawing style to the given object.
-	 * 
-	 * @return Object
-	 * @param Object
-	 */
+	// private
 	var determineStyle=function(o) {
 		if(o instanceof Curly.Gradient) {
 			return o.createGradient(ctx, this);
@@ -144,11 +147,7 @@ Curly.Canvas=function(source) {
 		}
 	};
 	
-	/**
-	 * Applies the current state to the canvas.
-	 * 
-	 * @private
-	 */
+	// private
 	var setState=function() {
 		var s;
 		if(stateStack.length<=0) {
@@ -397,21 +396,7 @@ Curly.Canvas=function(source) {
 		return ctx.getImageData(x, y, w, h);
 	};
 	
-	/**
-	 * Draws the given element into the canvas element.
-	 * 
-	 * @return void
-	 * @param HtmlImageElement|HtmlCanvasElement|HtmlVideoElement
-	 * @param integer Source width
-	 * @param integer Source height
-	 * @param integer Source x coordinate
-	 * @param integer Source y coordinate
-	 * @param integer Target x coordinate
-	 * @param integer Target y coordinate
-	 * @param integer Target width
-	 * @param integer Target height
-	 * @internal
-	 */
+	// private
 	var drawImage=function(el, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
 		var tmp=this.useIntCorrection;
 		this.useIntCorrection=true;
@@ -881,22 +866,30 @@ Curly.Transparent='rgba(0,0,0,0)';
  */
 Curly.Drawable=function(x, y) {
 	/**
-	 * @var integer X coordinate
+	 * X coordinate
+	 * @property x
+	 * @type integer
 	 */
 	this.x=x || 0;
 	
 	/**
-	 * @var integer Y coordinate
+	 * Y coordinate
+	 * @property y
+	 * @type integer
 	 */
 	this.y=y || 0;
 };
 Curly.extendClass(Curly.Drawable, Object, {
 	/**
-	 * @var boolean Flag, if this object should draw a filling.
+	 * Flag, if this object should draw a filling.
+	 * @property drawFill
+	 * @type boolean
 	 */
 	drawFill: true,
 	/**
-	 * @var boolean Flag, if this object should draw a border line.
+	 * Flag, if this object should draw a border line.
+	 * @property drawStroke
+	 * @type boolean
 	 */
 	drawStroke: true,
 	/**
@@ -984,19 +977,27 @@ Curly.Path=function(x, y) {
 };
 Curly.extendClass(Curly.Path, Curly.Shape, {
 	/**
-	 * @var Curly.Canvas The referenced canvas object of this path
+	 * The referenced canvas object of this path
+	 * @property canvas
+	 * @type Curly.Canvas
 	 */
 	canvas: null,
 	/**
-	 * @var integer The last stored X coordinate of this object
+	 * The last stored X coordinate of this object
+	 * @property lastX
+	 * @type integer
 	 */
 	lastX: -1,
 	/**
-	 * @var integer The last stored Y coordinate of this object
+	 * The last stored Y coordinate of this object
+	 * @property lastY
+	 * @type integer
 	 */
 	lastY: -1,
 	/**
-	 * @var array Action stack of this path
+	 * Action stack of this path
+	 * @property comp
+	 * @type array
 	 */
 	comp: null,
 	/**
@@ -1336,12 +1337,16 @@ Curly.Rectangle=function(x, y, w, h) {
 	Curly.Rectangle.superclass.constructor.call(this, x, y);
 	
 	/**
-	 * @var integer Width of this object.
+	 * Width of this object.
+	 * @property w
+	 * @type integer
 	 */
 	this.w=w || 0;
 	
 	/**
-	 * @var integer Height of this object
+	 * Height of this object
+	 * @property h
+	 * @type integer
 	 */
 	this.h=h || 0;
 	
@@ -1419,32 +1424,44 @@ Curly.Bezier=function(x0, y0, x1, y1, cp1x, cp1y, cp2x, cp2y) {
 	Curly.Bezier.superclass.constructor.call(this, x0, y0);
 	
 	/**
-	 * @var integer X coordinate of the end point
+	 * X coordinate of the end point
+	 * @property x1
+	 * @type integer
 	 */
 	this.x1=x1 || 0;
 	
 	/**
-	 * @var integer Y coordinate of the end point
+	 * Y coordinate of the end point
+	 * @property y1
+	 * @type integer
 	 */
 	this.y1=y1 || 0;
 	
 	/**
-	 * @var integer X coordinate of the first anchor point
+	 * X coordinate of the first anchor point
+	 * @property cp1x
+	 * @type integer
 	 */
 	this.cp1x=cp1x || 0;
 	
 	/**
-	 * @var integer Y coordinate of the first anchor point
+	 * Y coordinate of the first anchor point
+	 * @property cp1y
+	 * @type integer
 	 */
 	this.cp1y=cp1y || 0;
 	
 	/**
-	 * @var integer X coordinate of the second anchor point
+	 * X coordinate of the second anchor point
+	 * @property cp2x
+	 * @type integer
 	 */
 	this.cp2x=cp2x || 0;
 	
 	/**
-	 * @var integer Y coordinate of the second anchor point
+	 * Y coordinate of the second anchor point
+	 * @property cp2y
+	 * @type integer
 	 */
 	this.cp2y=cp2y || 0;
 	
@@ -1502,22 +1519,30 @@ Curly.QuadCurve=function(x0, y0, x1, y1, cpx, cpy) {
 	Curly.QuadCurve.superclass.constructor.call(this, x0, y0);
 	
 	/**
-	 * @var integer X coordinate of the end point
+	 * X coordinate of the end point
+	 * @property x1
+	 * @type integer
 	 */
 	this.x1=x1 || 0;
 	
 	/**
-	 * @var integer Y coordinate of the end point
+	 * Y coordinate of the end point
+	 * @property y1
+	 * @type integer
 	 */
 	this.y1=y1 || 0;
 	
 	/**
-	 * @var integer X coordinate of the anchor point
+	 * X coordinate of the anchor point
+	 * @property cpx
+	 * @type integer
 	 */
 	this.cpx=cpx || 0;
 	
 	/**
-	 * @var integer Y coordinate of the anchor point
+	 * Y coordinate of the anchor point
+	 * @property cpy
+	 * @type integer
 	 */
 	this.cpy=cpy || 0;
 	
@@ -1554,22 +1579,30 @@ Curly.Arc=function(x, y, r, sa, ea, acw) {
 	Curly.Arc.superclass.constructor.call(this, x, y);
 	
 	/**
-	 * @var integer Radius
+	 * Radius
+	 * @property radius
+	 * @type integer
 	 */
 	this.radius=r || 0;
 	
 	/**
-	 * @var float The start angle
+	 * The start angle
+	 * @property startAngle
+	 * @type float
 	 */
 	this.startAngle=sa || 0;
 	
 	/**
-	 * @var float The end angle
+	 * The end angle
+	 * @property endAngle
+	 * @type float
 	 */
 	this.endAngle=ea===undefined ? Math.PI*2 : ea;
 	
 	/**
-	 * @var boolean Flag if the arc should be drawn counter-clockwise
+	 * Flag if the arc should be drawn counter-clockwise
+	 * @property antiClockwise
+	 * @type boolean
 	 */
 	this.antiClockwise=!!acw;
 	
@@ -1683,19 +1716,27 @@ Curly.Gradient.Linear=function(stops) {
 };
 Curly.extendClass(Curly.Gradient.Linear, Curly.Gradient, {
 	/**
-	 * @var float X coordinate of the start point.
+	 * X coordinate of the start point.
+	 * @property x0
+	 * @type float
 	 */
 	x0: 0,
 	/**
-	 * @var float Y coordinate of the start point.
+	 * Y coordinate of the start point.
+	 * @property y0
+	 * @type float
 	 */
 	y0: 0,
 	/**
-	 * @var float X coordinate of the end point.
+	 * X coordinate of the end point.
+	 * @property x1
+	 * @type float
 	 */
 	x1: 100,
 	/**
-	 * @var float Y coordinate of the end point.
+	 * Y coordinate of the end point.
+	 * @property y1
+	 * @type float
 	 */
 	y1: 100,
 	/**
@@ -1755,27 +1796,39 @@ Curly.Gradient.Radial=function(stops) {
 };
 Curly.extendClass(Curly.Gradient.Radial, Curly.Gradient, {
 	/**
-	 * @var float X coordinate of the center of the inner circle.
+	 * X coordinate of the center of the inner circle.
+	 * @property x0
+	 * @type float
 	 */
 	x0: 0,
 	/**
-	 * @var float Y coordinate of the center of the inner circle.
+	 * Y coordinate of the center of the inner circle.
+	 * @property y0
+	 * @type float
 	 */
 	y0: 0,
 	/**
-	 * @var float Radius of the inner circle
+	 * Radius of the inner circle
+	 * @property r0
+	 * @type float
 	 */
 	r0: 0,
 	/**
-	 * @var float X coordinate of the center of the outer circle.
+	 * X coordinate of the center of the outer circle.
+	 * @property x1
+	 * @type float
 	 */
 	x1: 0,
 	/**
-	 * @var float Y coordinate of the center of the outer circle.
+	 * Y coordinate of the center of the outer circle.
+	 * @property y1
+	 * @type float
 	 */
 	y1: 0,
 	/**
-	 * @var float Radius of the outer circle
+	 * Radius of the outer circle
+	 * @property r1
+	 * @type float
 	 */
 	r1: 100,
 	/**
@@ -1809,11 +1862,15 @@ Curly.Smiley=function(x, y, config) {
 };
 Curly.extendClass(Curly.Smiley, Curly.Shape, {
 	/**
-	 * @var String Main color of the smiley
+	 * Main color of the smiley
+	 * @property mainColor
+	 * @type String
 	 */
 	mainColor: 'yellow',
 	/**
-	 * @var String Color of the border
+	 * Color of the border
+	 * @property borderColor
+	 * @type String
 	 */
 	borderColor: 'black',
 	/** 
@@ -1859,11 +1916,15 @@ Curly.extendClass(Curly.Smiley, Curly.Shape, {
  */
 Curly.Text=function(x, y, text, font) {
 	/**
-	 * @param string The text to draw
+	 * The text to draw
+	 * @property text
+	 * @type string
 	 */
 	this.text=text+"" || '';
 	/**
-	 * @var string Font identifier
+	 * Font identifier
+	 * @property font
+	 * @type string
 	 */
 	this.font=font+"" || Curly.Canvas.State.DEFAULTS.font;
 	
@@ -1873,7 +1934,9 @@ Curly.Text=function(x, y, text, font) {
 };
 Curly.extendClass(Curly.Text, Curly.Drawable, {
 	/**
-	 * @var integer The maximal width of the text to draw
+	 * The maximal width of the text to draw
+	 * @property maxWidth
+	 * @type integer
 	 */
 	maxWidth: undefined,
 	/** 

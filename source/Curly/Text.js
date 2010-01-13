@@ -12,11 +12,15 @@
  */
 Curly.Text=function(x, y, text, font) {
 	/**
-	 * @param string The text to draw
+	 * The text to draw
+	 * @property text
+	 * @type string
 	 */
 	this.text=text+"" || '';
 	/**
-	 * @var string Font identifier
+	 * Font identifier
+	 * @property font
+	 * @type string
 	 */
 	this.font=font+"" || Curly.Canvas.State.DEFAULTS.font;
 	
@@ -26,7 +30,9 @@ Curly.Text=function(x, y, text, font) {
 };
 Curly.extendClass(Curly.Text, Curly.Drawable, {
 	/**
-	 * @var integer The maximal width of the text to draw
+	 * The maximal width of the text to draw
+	 * @property maxWidth
+	 * @type integer
 	 */
 	maxWidth: undefined,
 	/** 
