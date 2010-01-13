@@ -415,8 +415,8 @@ Curly.Canvas=function(source) {
 				srcH=elH ? elH : el.height;
 			}
 			
-			drawImage(
-				el,
+			drawImage.call(
+				this, el,
 				srcX, srcY, srcW, srcH,
 				dstX, dstY, srcW, srcH
 			);
@@ -486,8 +486,8 @@ Curly.Canvas=function(source) {
 			srcH=el.height;
 		}
 		
-		drawImage(
-			el,
+		drawImage.call(
+			this, el,
 			srcX, srcY, srcW, srcH,
 			dstX, dstY, dstW, dstH
 		);
