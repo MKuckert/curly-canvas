@@ -1,0 +1,286 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<html>
+<head>
+<title>
+ Overview
+</title>
+<link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+<script>
+function asd() {
+	
+		parent.document.title="StatefulPath.js Overview";
+	
+}
+</script>
+</head>
+<body bgcolor="white" onload="asd();">
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top">
+<em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<center>
+	
+	   <h2>StatefulPath.js</h2>
+	
+</center>
+
+	
+
+
+<h4>Summary</h4>
+<p>
+	
+		No overview generated for 'StatefulPath.js'<BR/><BR/>
+	
+</p>
+
+<hr>
+
+
+    <table border="1" cellpadding="3" cellspacing="0" width="100%">
+    <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+    <td colspan=2><font size="+2">
+    
+        <b>Class Summary</b>
+    
+    </font></td>
+    </tr>
+    
+    <tr bgcolor="white" class="TableRowColor">
+    <td width="15%"><b><a href="Curly/StatefulPath.html">Curly.StatefulPath</a></b></td>
+    <td>&nbsp;</td>
+    </tr>
+    
+    </table>
+    <hr/> 
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<!-- ========== END METHOD SUMMARY =========== -->
+
+
+        <pre class="sourceview"><span class="comment">/**
+ * Extends the path to enable changing of the canvas state and drawing of
+ * ancillary Drawable objects.
+ * 
+ * <span class="attrib">@class</span> Curly.StatefulPath
+ * <span class="attrib">@extends</span> Curly.Path
+ */</span>
+<span class="comment">/**
+ * <span class="attrib">@constructor</span>
+ * <span class="attrib">@param</span> integer X coordinate of the start point
+ * <span class="attrib">@param</span> integer Y coordinate of the start point
+ * <span class="attrib">@param</span> Curly.Canvas
+ */</span>
+Curly.StatefulPath=<span class="reserved">function</span>(x, y, canvas) {
+	Curly.StatefulPath.superclass.constructor.apply(<span class="reserved">this</span>, arguments);
+};
+Curly.extendClass(Curly.StatefulPath, Curly.Path, {
+	<span class="comment">/**
+	 * Draws the given Drawable element.
+	 * 
+	 * <span class="attrib">@return</span> Curly.Path
+	 * <span class="attrib">@param</span> Curly.Drawable
+	 */</span>
+	add: <span class="reserved">function</span>(drawable) {
+		<span class="reserved">this</span>.comp.push(drawable);
+		<span class="reserved">return</span> <span class="reserved">this</span>;
+	},
+	<span class="comment">/**
+	 * Overwrites the current canvas state.
+	 * 
+	 * <span class="attrib">@return</span> Curly.Path
+	 * <span class="attrib">@param</span> Curly.Canvas.State|String
+	 * <span class="attrib">@param</span> String
+	 */</span>
+	setState: <span class="reserved">function</span>(state, value) {
+		<span class="reserved">if</span>(typeof state===<span class="literal">'string'</span>) {
+			var tmp={};
+			tmp[state]=value;
+			state=tmp;
+		}
+		<span class="reserved">this</span>.comp.push([<span class="literal">'overwriteState'</span>, state]);
+		<span class="reserved">this</span>.comp.push([<span class="literal">'applyState'</span>]);
+		<span class="reserved">this</span>.pushPosition(true);
+		<span class="reserved">return</span> <span class="reserved">this</span>;
+	},
+	<span class="comment">/** 
+	 * Draws this object.
+	 * 
+	 * <span class="attrib">@return</span> Curly.Path
+	 * <span class="attrib">@param</span> CanvasRenderingContext2D|boolean Rendering context or a Flag if a
+	 *  filling should be rendered
+	 * <span class="attrib">@param</span> Curly.Canvas|boolean Canvas or Flag if a stroke should be rendered.
+	 * <span class="attrib">@todo</span> Clean this up
+	 */</span>
+	draw: <span class="reserved">function</span>(context, canvas) {
+		<span class="reserved">if</span>(!(canvas instanceof Curly.Canvas)) {
+			<span class="reserved">this</span>.drawFill=!(context===false);
+			<span class="reserved">this</span>.drawStroke=!(canvas===false);
+			
+			<span class="reserved">if</span>(<span class="reserved">this</span>.canvas instanceof Curly.Canvas) {
+				canvas=<span class="reserved">this</span>.canvas;
+				context=canvas.getCtx();
+			}
+			<span class="reserved">else</span> {
+				throw new Curly.Canvas.Error(<span class="literal">'No canvas given'</span>);
+			}
+		}
+		
+		var self=<span class="reserved">this</span>;
+		var render=<span class="reserved">function</span>() {
+			<span class="reserved">if</span>(self.drawFill) {
+				context.fill();
+			}
+			<span class="reserved">if</span>(self.drawStroke) {
+				context.stroke();
+			}
+		};
+		
+		context.beginPath();
+		
+		var comp;
+		<span class="reserved">for</span>(var i in <span class="reserved">this</span>.comp) {
+			comp=<span class="reserved">this</span>.comp[i];
+			
+			<span class="comment">// Copy the array to not modify the original</span>
+			var a=[].concat(comp);
+			var method=a.shift();
+			
+			<span class="reserved">if</span>(method instanceof Curly.Drawable) {
+				render();
+				context.closePath();
+				canvas.draw(method);
+				context.beginPath();
+			}
+			<span class="reserved">else</span> <span class="reserved">if</span>(!context[method]) {
+				<span class="reserved">if</span>(!canvas[method]) {
+					throw new Curly.Canvas.Error(<span class="literal">'Method '</span>+method+<span class="literal">' not found'</span>);
+				}
+				
+				render();
+				context.closePath();
+				canvas[method].apply(canvas, a);
+				context.beginPath();
+			}
+			<span class="reserved">else</span> {
+				context[method].apply(context, a);
+			}
+		}
+		
+		render();
+		context.closePath();
+		
+		<span class="reserved">return</span> <span class="reserved">this</span>;
+	}
+});
+</pre>
+	<hr>
+
+
+
+<!-- ========== START OF NAVBAR ========== -->
+<a name="navbar_top"><!-- --></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td colspan=2 bgcolor="#EEEEFF" class="NavBarCell1">
+<a name="navbar_top_firstrow"><!-- --></a>
+<table border="0" cellpadding="0" cellspacing="3">
+  <tr align="center" valign="top">
+  
+  
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
+  
+
+  <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="index-all.html"--><font class="NavBarFont1"><b>Index</b></font></a>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+  </tr>
+</table>
+</td>
+<td bgcolor="#EEEEFF" align="right" valign="top"><em>
+<b></b></em>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</font></td>
+<td bgcolor="white" class="NavBarCell2"><font size="-2">
+  <a href="index.html" target="_top"><b>FRAMES</b></a>  &nbsp;
+&nbsp;<a href="overview-summary.html" target="_top"><b>NO FRAMES</b></a>
+&nbsp;&nbsp;
+<script>
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="allclasses-noframe.html" TARGET=""><B>All Classes</B></A>');
+  }
+  //-->
+</script>
+<noscript>
+<a href="allclasses-noframe.html" target=""><b>All Classes</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<!-- =========== END OF NAVBAR =========== -->
+
+<hr>
+<font size="-1">
+
+</font>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Wed Jan 13 09:38:55 2010</div>
+</body>
+</html>
