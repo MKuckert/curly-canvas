@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Canvas Tetris</title>
+		<script type="text/javascript" src="../../build/dist.js"></script>
+		<script type="text/javascript" src="tetris.js"></script>
+		<script type="text/javascript" src="elements.js"></script>
+		<style type="text/css">
+#c {
+	float: left;
+	border: 1px solid grey;
+}
+#dump {
+	float: left;
+	height: 240px;
+	margin-left: 5px;
+	width: 200px;
+	font-family: monospace;
+	border: 1px solid grey;
+	white-space: pre;
+}
+		</style>
+	</head>
+	<body>
+		<canvas id="c" width="160" height="240"></canvas>
+		<div id="dump"></div>
+		<button onclick="game.stop()">stop</button>
+		<button onclick="game.run()">run</button>
+		<script type="text/javascript">//<![CDATA[
+var game;
+window.onload = function() {
+	try {
+		game = new Tetris('c');
+	}
+	catch(e) {
+		console.log(e);
+	}
+	game.run();
+}
+//		]]></script>
+	</body>
+</html>
