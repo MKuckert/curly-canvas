@@ -94,10 +94,10 @@ Curly.extendClass(Tetris, Object, {
 	run: function() {
 		var self=this;
 		this.timer=[
-			window.setTimeout(function() {
+			window.setInterval(function() {
 				self.loop();
 			}, 1000/this.speed),
-			window.setTimeout(function() {
+			window.setInterval(function() {
 				self.dump();
 			}, 50)
 		];
@@ -109,7 +109,7 @@ Curly.extendClass(Tetris, Object, {
 	 */
 	stop: function() {
 		for(var i=0; i<this.timer.length; i++) {
-			window.clearTimeout(this.timer[i]);
+			window.clearInterval(this.timer[i]);
 		}
 		this.timer=[];
 	},
@@ -247,11 +247,6 @@ Curly.extendClass(Tetris, Object, {
 		this.render();
 		
 		this.loopState=(this.loopState+1)%Tetris.LOOPSTATES;
-
-		var self=this;
-		this.timer[0]=window.setTimeout(function() {
-			self.loop();
-		}, 1000/this.speed);
 	},
 	/**
 	 * Checks for a collision of the given element.
@@ -387,11 +382,6 @@ Curly.extendClass(Tetris, Object, {
 		t.push(' down '+m.movedown);
 		
 		var dump=document.getElementById('dump').textContent=t.join("\n");
-		
-		var self=this;
-		this.timer[1]=window.setTimeout(function() {
-			self.dump();
-		}, 50);
 	},
 	/**
 	 * Finds rows full of boxes.
