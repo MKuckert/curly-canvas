@@ -31,7 +31,7 @@ Curly.extendClass(Tetris, Object, {
 	 */
 	canvas: null,
 	/**
-	 * @var Array timer The interval timer resources
+	 * @var integer timer The interval timer resource
 	 */
 	timer: null,
 	/**
@@ -71,9 +71,9 @@ Curly.extendClass(Tetris, Object, {
 	 */
 	loopState: 0,
 	/**
-	 * @var Object moveState The current movement state. Used for the next movement calculation
+	 * @var boolean moveDown Flag if the next move state should perform a movement down
 	 */
-	moveState: null,
+	moveDown: false,
 	/**
 	 * @var Array colors List of all possible box colors.
 	 */
@@ -93,14 +93,9 @@ Curly.extendClass(Tetris, Object, {
 	 */
 	run: function() {
 		var self=this;
-		this.timer=[
-			window.setInterval(function() {
-				self.loop();
-			}, 1000/this.speed),
-			window.setInterval(function() {
-				self.dump();
-			}, 50)
-		];
+		this.timer=	window.setInterval(function() {
+			self.loop();
+		}, 1000/this.speed);
 	},
 	/**
 	 * Stops the main loop of the game.
@@ -108,10 +103,8 @@ Curly.extendClass(Tetris, Object, {
 	 * @return void
 	 */
 	stop: function() {
-		for(var i=0; i<this.timer.length; i++) {
-			window.clearInterval(this.timer[i]);
-		}
-		this.timer=[];
+		window.clearInterval(this.timer);
+		this.timer=null;
 	},
 	/**
 	 * Initializes the game.
@@ -135,23 +128,24 @@ Curly.extendClass(Tetris, Object, {
 		this.render();
 		
 		// Bind event listener
-		this.moveState={
-			moveleft: false,
-			moveright: false,
-			movedown: false,
-			rotateleft: false,
-			rotateright: false
-		};
 		var self=this;
 		var eventHandler=function(e) {
-			self.onKeyDown(e);
+			self.onKeyDown(e||window.event);
+		};
+		var keyUp=function(e) {
+			e=e||window.event;
+			if(e.keyCode===83) {
+				this.moveDown=false;
+			}
 		};
 		
 		if(document.addEventListener) {
 			document.addEventListener('keydown', eventHandler, true);
+			document.addEventListener('keyup', keyUp, true);
 		}
 		else {
 			document.attachEvent('onkeydown', eventHandler);
+			document.attachEvent('onkeyup', keyUp);
 		}
 	},
 	/**
@@ -161,28 +155,30 @@ Curly.extendClass(Tetris, Object, {
 	 * @param Event
 	 */
 	onKeyDown: function(event) {
-		var m=this.moveState;
+		var el=this.curEl;
 		
 		// TODO: Don't hardcode this!
 		switch(event.keyCode) {
 			case 65:
-				m.moveleft=true;
-				m.moveright=false;
+				if(el && el.x>0) {
+					el.x--;
+					
+					if(this.checkCollision(el)) {
+						el.x++;
+					}
+				}
 				break;
 			case 68:
-				m.moveleft=false;
-				m.moveright=true;
+				if(el && (el.x+el.w)<this.cols) {
+					el.x++;
+					
+					if(this.checkCollision(el)) {
+						el.x--;
+					}
+				}
 				break;
 			case 83:
-				m.movedown=true;
-				break;
-			case 81:
-				m.rotateleft=true;
-				m.rotateright=false;
-				break;
-			case 69:
-				m.rotateleft=false;
-				m.rotateright=true;
+				this.moveDown=true;
 				break;
 			case 77:
 				if(!this.curEl) {
@@ -199,7 +195,6 @@ Curly.extendClass(Tetris, Object, {
 				this.render();
 				break;
 		}
-		this.moveState=m;
 	},
 	/**
 	 * Initializes the given element.
@@ -293,7 +288,7 @@ Curly.extendClass(Tetris, Object, {
 		}
 		// Move current element
 		else {
-			this.moveState.movedown=true;
+			this.moveDown=true;
 			this.stateMove();
 		}
 	},
@@ -303,54 +298,17 @@ Curly.extendClass(Tetris, Object, {
 	 * @return void
 	 */
 	stateMove: function() {
-		var el=this.curEl, m=this.moveState;
+		var el=this.curEl;
 		if(el===undefined) {
 			return;
 		}
 		
-		var y=el.y, i, j, changed=false;
+		var y=el.y;
 		
 		// Move down
-		if(m.movedown===true) {
+		if(this.moveDown===true) {
 			y++;
-			changed=true;
-			m.movedown=false;
-		}
-		
-		// Only move left or right, if we move down
-		if(changed) {
-			if(m.moveleft===true) {
-				if(el.x>0) {
-					el.x--;
-					
-					if(this.checkCollision(el)) {
-						el.x++;
-					}
-					else {
-						changed=true;
-					}
-				}
-				
-				m.moveleft=false;
-			}
-			else if(m.moveright===true) {
-				if((el.x+el.w)<this.cols) {
-					el.x++;
-					
-					if(this.checkCollision(el)) {
-						el.x--;
-					}
-					else {
-						changed=true;
-					}
-				}
-				
-				m.moveright=false;
-			}
-		}
-		
-		// Perform movement
-		if(changed) {
+			this.moveDown=false;
 			this.moveY(el, y);
 		}
 	},
@@ -373,22 +331,6 @@ Curly.extendClass(Tetris, Object, {
 			this.curEl=undefined;
 			this.insertElement(el);
 		}
-	},
-	/**
-	 * Dumps the current state.
-	 * 
-	 * @return void
-	 */
-	dump: function() {
-		var t=[];
-		
-		t.push('movestate:');
-		var m=this.moveState;
-		t.push(' right '+m.moveright);
-		t.push(' left '+m.moveleft);
-		t.push(' down '+m.movedown);
-		
-		var dump=document.getElementById('dump').textContent=t.join("\n");
 	},
 	/**
 	 * Finds rows full of boxes.
