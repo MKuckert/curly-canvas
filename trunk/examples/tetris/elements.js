@@ -99,6 +99,13 @@ Curly.extendClass(Tetris.ElementBase, Object, {
 		el.y=this.y+dif;
 		el.boxes=boxes;
 		
+		if(el.x<0) {
+			el.x=0;
+		}
+		else if(el.x+el.w>this.game.cols) {
+			el.x=this.game.cols-el.w;
+		}
+		
 		if(!this.game.checkCollision(el)) {
 			Curly.extend(this, el);
 		}
