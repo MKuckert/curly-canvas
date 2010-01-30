@@ -4,7 +4,7 @@ return targetObj;};Curly.extendClass=function(child,parent,methods){parent.proto
 child.superclass=parent.prototype;return child;};Curly.cloneArray=function(ar){var clone=[];for(var i=0;i<ar.length;i++){if(ar[i]instanceof Array){clone.push(ar[i].clone());}
 else{clone.push(ar[i]);}}
 return clone;};Curly.Canvas=function(source){Curly.Canvas.superclass.constructor.call(this);var self=this;var ctx=null;var stateStack=[];this.getCtx=function(){return ctx;};if(typeof source=='string'){source=document.getElementById(source);if(!source){throw new Curly.Canvas.Error('The given argument is no valid element id');}}
-if(source instanceof CanvasRenderingContext2D){ctx=source;}
+if(window.CanvasRenderingContext2D&&source instanceof CanvasRenderingContext2D){ctx=source;}
 else if(source.tagName.toLowerCase()=='canvas'){if(window.G_vmlCanvasManager){G_vmlCanvasManager.initElement(source);}
 ctx=source.getContext('2d');}
 else{throw new Curly.Canvas.Error('The given argument is no valid parameter');}
