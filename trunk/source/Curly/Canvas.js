@@ -32,13 +32,13 @@ Curly.Canvas=function(source) {
 		}
 	}
 	
-	if(source instanceof CanvasRenderingContext2D) {
+	if(window.CanvasRenderingContext2D && source instanceof CanvasRenderingContext2D) {
 		ctx=source;
 	}
 	else if(source.tagName.toLowerCase()=='canvas') {
 		// Support for excanvas
 		if(window.G_vmlCanvasManager) {
-			G_vmlCanvasManager.initElement(source);
+			source=G_vmlCanvasManager.initElement(source);
 		}
 		
 		ctx=source.getContext('2d');

@@ -92,7 +92,7 @@ Curly.Canvas=function(source) {
 		}
 	}
 	
-	if(source instanceof CanvasRenderingContext2D) {
+	if(window.CanvasRenderingContext2D && source instanceof CanvasRenderingContext2D) {
 		ctx=source;
 	}
 	else if(source.tagName.toLowerCase()=='canvas') {
