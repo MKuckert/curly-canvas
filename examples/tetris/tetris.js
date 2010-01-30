@@ -143,9 +143,16 @@ Curly.extendClass(Tetris, Object, {
 			rotateright: false
 		};
 		var self=this;
-		document.addEventListener('keydown', function(e) {
+		var eventHandler=function(e) {
 			self.onKeyDown(e);
-		}, true);
+		};
+		
+		if(document.addEventListener) {
+			document.addEventListener('keydown', eventHandler, true);
+		}
+		else {
+			document.attachEvent('onkeydown', eventHandler);
+		}
 	},
 	/**
 	 * Eventlistener for the keydown event.
