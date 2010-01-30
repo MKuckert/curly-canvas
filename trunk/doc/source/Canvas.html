@@ -43,7 +43,7 @@ Curly.Canvas=function(source) {
 	if(source instanceof CanvasRenderingContext2D) {
 		ctx=source;
 	}
-	else if(source instanceof Element && source.tagName.toLowerCase()=='canvas') {
+	else if(source.tagName.toLowerCase()=='canvas') {
 		// Support for excanvas
 		if(window.G_vmlCanvasManager) {
 			G_vmlCanvasManager.initElement(source);
