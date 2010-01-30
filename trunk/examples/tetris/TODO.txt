@@ -1,0 +1,11 @@
+ - wizard to configure the game
+ - detect end of game (new stone directly inserted into a stone)
+ - add "next stone"-canvas
+ - add scoring mechanism
+ - add timer (how many seconds played yet)
+ - add row counter
+ - add automatically increment of game speed
+ - add more stone types e.g. that one:
+		o o
+		ooo
+ - make the explosion animation nice
