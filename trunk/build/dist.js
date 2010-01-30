@@ -95,7 +95,7 @@ Curly.Canvas=function(source) {
 	if(source instanceof CanvasRenderingContext2D) {
 		ctx=source;
 	}
-	else if(source instanceof Element && source.tagName.toLowerCase()=='canvas') {
+	else if(source.tagName.toLowerCase()=='canvas') {
 		// Support for excanvas
 		if(window.G_vmlCanvasManager) {
 			G_vmlCanvasManager.initElement(source);
@@ -1186,7 +1186,7 @@ Curly.extendClass(Curly.Path, Curly.Shape, {
 		canvas.applyState();
 		context.beginPath();
 		
-		for(var i in this.comp) {
+		for(var i=0; i<this.comp.length; i++) {
 			// Copy the array to not modify the original
 			var a=[].concat(this.comp[i]);
 			var method=a.shift();
