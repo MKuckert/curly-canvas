@@ -226,7 +226,7 @@ Curly.extendClass(Curly.Path, Curly.Shape, {
 		canvas.applyState();
 		context.beginPath();
 		
-		for(var i in this.comp) {
+		for(var i=0; i<this.comp.length; i++) {
 			// Copy the array to not modify the original
 			var a=[].concat(this.comp[i]);
 			var method=a.shift();

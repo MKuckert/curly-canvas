@@ -5,7 +5,7 @@ child.superclass=parent.prototype;return child;};Curly.cloneArray=function(ar){v
 else{clone.push(ar[i]);}}
 return clone;};Curly.Canvas=function(source){Curly.Canvas.superclass.constructor.call(this);var self=this;var ctx=null;var stateStack=[];this.getCtx=function(){return ctx;};if(typeof source=='string'){source=document.getElementById(source);if(!source){throw new Curly.Canvas.Error('The given argument is no valid element id');}}
 if(source instanceof CanvasRenderingContext2D){ctx=source;}
-else if(source instanceof Element&&source.tagName.toLowerCase()=='canvas'){if(window.G_vmlCanvasManager){G_vmlCanvasManager.initElement(source);}
+else if(source.tagName.toLowerCase()=='canvas'){if(window.G_vmlCanvasManager){G_vmlCanvasManager.initElement(source);}
 ctx=source.getContext('2d');}
 else{throw new Curly.Canvas.Error('The given argument is no valid parameter');}
 this.xCorrection=0.5;this.yCorrection=0.5;this.useCorrection=true;this.useIntCorrection=false;var determineStyle=function(o){if(o instanceof Curly.Gradient){return o.createGradient(ctx,this);}
@@ -54,7 +54,7 @@ shape.draw(false,false);ctx.clip();this.useCorrection=tmp;setState();return this
 return this;},moveTo:function(x,y){Curly.Path.superclass.moveTo.call(this,x,y);this.pushPosition();return this;},setPosition:function(x,y){Curly.Path.superclass.moveTo.call(this,x,y);return this;},lineTo:function(x,y){this.comp.push(['lineTo',x,y]);this.setPosition(x,y);return this;},rect:function(w,h){this.pushPosition();this.comp.push(['rect',this.x,this.y,w,h]);return this;},arcTo:function(x1,y1,r){this.pushPosition();this.comp.push(['arcTo',this.x,this.y,x1,y1,r]);this.moveTo(x1,y1);return this;},arc:function(r,sa,se,acw){this.pushPosition();this.comp.push(['moveTo',this.x+r,this.y]);this.comp.push(['arc',this.x,this.y,r,sa||0,se||Math.PI<<1,acw||false]);this.moveTo(this.x+r,this.y);return this;},dot:function(){this.pushPosition();this.comp.push(['fillRect',this.x+0.5,this.y+0.5,1,1]);return this;},quadCurve:function(cpx,cpy,x,y){this.pushPosition();this.comp.push(['quadraticCurveTo',cpx,cpy,x,y]);this.moveTo(x,y);return this;},bezier:function(cp1x,cp1y,cp2x,cp2y,x,y){this.pushPosition();this.comp.push(['bezierCurveTo',cp1x,cp1y,cp2x,cp2y,x,y]);this.moveTo(x,y);return this;},getPath:function(canvas){if(canvas===this.canvas){return this;}
 var clone=new this.constructor();clone.canvas=canvas;clone.comp=Curly.cloneArray(this.comp);return clone;},draw:function(context,canvas){if(!(canvas instanceof Curly.Canvas)){this.drawFill=!(context===false);this.drawStroke=!(canvas===false);if(this.canvas instanceof Curly.Canvas){canvas=this.canvas;context=canvas.getCtx();}
 else{throw new Curly.Canvas.Error('No canvas given');}}
-canvas.applyState();context.beginPath();for(var i in this.comp){var a=[].concat(this.comp[i]);var method=a.shift();context[method].apply(context,a);}
+canvas.applyState();context.beginPath();for(var i=0;i<this.comp.length;i++){var a=[].concat(this.comp[i]);var method=a.shift();context[method].apply(context,a);}
 if(this.drawFill){context.fill();}
 if(this.drawStroke){context.stroke();}
 return this;}});Curly.StatefulPath=function(x,y,canvas){Curly.StatefulPath.superclass.constructor.apply(this,arguments);};Curly.extendClass(Curly.StatefulPath,Curly.Path,{add:function(drawable){this.comp.push(drawable);return this;},setState:function(state,value){if(typeof state==='string'){var tmp={};tmp[state]=value;state=tmp;}
