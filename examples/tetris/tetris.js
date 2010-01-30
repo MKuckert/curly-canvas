@@ -94,10 +94,10 @@ Curly.extendClass(Tetris, Object, {
 	run: function() {
 		var self=this;
 		this.timer=[
-			window.setInterval(function() {
+			window.setTimeout(function() {
 				self.loop();
 			}, 1000/this.speed),
-			window.setInterval(function() {
+			window.setTimeout(function() {
 				self.dump();
 			}, 50)
 		];
@@ -109,7 +109,7 @@ Curly.extendClass(Tetris, Object, {
 	 */
 	stop: function() {
 		for(var i=0; i<this.timer.length; i++) {
-			window.clearInterval(this.timer[i]);
+			window.clearTimeout(this.timer[i]);
 		}
 		this.timer=[];
 	},
@@ -178,10 +178,16 @@ Curly.extendClass(Tetris, Object, {
 				m.rotateright=true;
 				break;
 			case 77:
+				if(!this.curEl) {
+					break;
+				}
 				this.curEl.rotateClockwise();
 				this.render();
 				break;
 			case 78:
+				if(!this.curEl) {
+					break;
+				}
 				this.curEl.rotateAntiClockwise();
 				this.render();
 				break;
@@ -217,42 +223,6 @@ Curly.extendClass(Tetris, Object, {
 		}
 	},
 	/**
-	 * Moves the given element in the boxes array
-	 * 
-	 * @return void
-	 * @param Tetris.ElementBase
-	 * @param Integer x New x position
-	 * @param Integer y New y position
-	 */
-	/*Not used anymore
-	moveElement: function(el, x, y) {
-		var i, j, b=this.boxes;
-		
-		// Move the boxes
-		for(i=el.h-1; i>=0; i--) {
-			for(j=0; j<el.w; j++) {
-				if(!el.boxes[i][j]) {
-					continue;
-				}
-
-				// Overwrite old position
-				b[i+el.y][j+el.x]=undefined;
-			}
-			for(j=0; j<el.w; j++) {
-				if(!el.boxes[i][j]) {
-					continue;
-				}
-				
-				// Change current position
-				console.log(i+y, j+x, i, j);
-				b[i+y][j+x]=el.boxes[i][j];
-			}
-		}
-		
-		el.x=x;
-		el.y=y;
-	},*/
-	/**
 	 * Runs one main loop iteration.
 	 * 
 	 * @return void
@@ -277,71 +247,31 @@ Curly.extendClass(Tetris, Object, {
 		this.render();
 		
 		this.loopState=(this.loopState+1)%Tetris.LOOPSTATES;
+
+		var self=this;
+		this.timer[0]=window.setTimeout(function() {
+			self.loop();
+		}, 1000/this.speed);
 	},
 	/**
-	 * Checks for a collision on the y axis beneath a box element.
+	 * Checks for a collision of the given element.
 	 * 
 	 * @return boolean true, if there's a collision
 	 * @param Tetris.ElementBase The element
 	 */
-	checkYCollision: function(el) {
-		var b=this.boxes, i, j;
-		
-		for(j=0; j<el.w; j++) {
-			// Skip over every empty box above the element
-			for(i=0; i<el.h; i++) {
-				if(el.boxes[i][j]!==undefined) {
-					break;
-				}
-			}
-			// Skip over every filled box of the element
-			for(; i<el.h; i++) {
-				if(el.boxes[i][j]===undefined) {
-					break;
-				}
-			}
-			
-			// Check the current box for a collision
-			if(i+el.y<this.rows && b[i+el.y][j+el.x]) {
-				console.log('Y collision at '+(j+el.x)+', '+(i+el.y)+' detected');
-				return true;
-			}
+	checkCollision: function(el) {
+		if(el.x<0 || el.y<0 || el.x+el.w>this.cols || el.y+el.h>this.rows) {
+			return true;
 		}
 		
-		return false;
-	},
-	/**
-	 * Checks for a collision on the x axis of a box element.
-	 * 
-	 * The parameters are so generic because this method is used to check for collisions
-	 * on the left and on the right of a box element.
-	 * 
-	 * @return boolean true, if there's a collision
-	 * @param Tetris.ElementBase The element
-	 * @param integer The lower limit of the iteration
-	 * @param integer The upper limit of the iteration
-	 * @param integer Increment value for each iteration
-	 */
-	checkXCollision: function(el, s, n, inc) {
 		var b=this.boxes, i, j;
 		for(i=0; i<el.h; i++) {
-			// Skip over every empty box at the one side of the element
-			for(j=s; j!=n; j+=inc) {
-				if(el.boxes[i][j]!==undefined) {
-					break;
+			// Check the element boxes for a collision
+			for(j=0; j<el.w; j++) {
+				if(el.boxes[i][j] && b[i+el.y][j+el.x]) {
+					console.log('Collision at '+(j+el.x)+', '+(i+el.y)+' detected');
+					return true;
 				}
-			}
-			// Skip over every filled box of the element
-			for(; j!=n; j+=inc) {
-				if(el.boxes[i][j]===undefined) {
-					break;
-				}
-			}
-			
-			// Check the current box for a collision
-			if(i+el.y>0 && j+el.x>0 && b[i+el.y][j+el.x]) {
-				console.log('X collision at '+(j+el.x)+', '+(i+el.y)+' detected');
-				return true;
 			}
 		}
 		
@@ -376,7 +306,7 @@ Curly.extendClass(Tetris, Object, {
 			return;
 		}
 		
-		var x=el.x, y=el.y, i, j, changed=false;
+		var y=el.y, i, j, changed=false;
 		
 		// Move down
 		if(m.movedown===true) {
@@ -388,21 +318,33 @@ Curly.extendClass(Tetris, Object, {
 		// Only move left or right, if we move down
 		if(changed) {
 			if(m.moveleft===true) {
-				if(x>0 && !this.checkXCollision(el, el.w, -1, -1)) {
-					x--;
-					changed=true;
+				if(el.x>0) {
+					el.x--;
+					
+					if(this.checkCollision(el)) {
+						el.x++;
+					}
+					else {
+						changed=true;
+					}
 				}
+				
 				m.moveleft=false;
 			}
 			else if(m.moveright===true) {
-				if((x+el.w)<this.cols && !this.checkXCollision(el, 0, el.w, 1)) {
-					x++;
-					changed=true;
+				if((el.x+el.w)<this.cols) {
+					el.x++;
+					
+					if(this.checkCollision(el)) {
+						el.x--;
+					}
+					else {
+						changed=true;
+					}
 				}
 				
 				m.moveright=false;
 			}
-			el.x=x;
 		}
 		
 		// Perform movement
@@ -419,12 +361,15 @@ Curly.extendClass(Tetris, Object, {
 	 * @param integer y
 	 */
 	moveY: function(el, y) {
-		if(el.h+y-1<this.rows && !this.checkYCollision(el)) {
-			el.y=y;
+		var oldY=el.y, forceInsert=false;
+		el.y=y;
+		if(this.checkCollision(el)) {
+			el.y=oldY;
+			forceInsert=true;
 		}
-		else {
-			this.insertElement(el);
+		if(forceInsert || el.h+y>=this.rows) {
 			this.curEl=undefined;
+			this.insertElement(el);
 		}
 	},
 	/**
@@ -442,6 +387,11 @@ Curly.extendClass(Tetris, Object, {
 		t.push(' down '+m.movedown);
 		
 		var dump=document.getElementById('dump').textContent=t.join("\n");
+		
+		var self=this;
+		this.timer[1]=window.setTimeout(function() {
+			self.dump();
+		}, 50);
 	},
 	/**
 	 * Finds rows full of boxes.
@@ -495,20 +445,36 @@ Curly.extendClass(Tetris, Object, {
 	 * @return void
 	 */
 	render: function() {
-		var c=this.canvas, b=this.boxes, x, y, path=c.statefulPath(0, 0), s=this.size;
-		c.clear();
+		var b=this.boxes, x, y, s=this.size;
+		this.canvas.
+			clear().
+			statefulPath(0, 0).
+			setState('fillStyle', 'black').
+			rect(this.cols*s, this.rows*s).
+			draw();
 		
-		path.
-			setState('fillStyle', 'grey').
-			rect(this.cols*s, this.rows*s);
+		var path=this.canvas.
+			overwriteState('strokeStyle', '#333').
+			path(0, 0);
+		
+		for(x=1; x<this.cols; x++) {
+			path.
+				moveTo(x*s, 0).
+				lineTo(x*s, this.rows*s);
+		}
+		for(y=1; y<this.rows; y++) {
+			path.
+				moveTo(0, y*s).
+				lineTo(this.cols*s, y*s);
+		}
+		
+		path.draw(false, true);
 		
 		// Render static boxes
 		for(y=0; y<this.rows; y++) {
 			for(x=0; x<this.cols; x++) {
 				if(b[y][x]) {
-					path.moveTo(x*s, y*s);
-					path.setState('fillStyle', b[y][x]);
-					path.rect(s, s);
+					this.renderBox(x, y, b[y][x], this.canvas);
 				}
 			}
 		}
@@ -516,32 +482,64 @@ Curly.extendClass(Tetris, Object, {
 		// Render current element
 		var el=this.curEl;
 		if(el) {
-			path.setState('fillStyle', el.color);
 			for(y=0; y<el.h; y++) {
 				for(x=0; x<el.w; x++) {
 					if(!el.boxes[y][x]) {
 						continue;
 					}
-					path.
-						moveTo((x+el.x)*s, (y+el.y)*s).
-						rect(s, s);
+					this.renderBox(x+el.x, y+el.y, el.color, this.canvas);
 				}
 			}
 		}
 		
 		if(this.finishedRowsAnimation>0) {
 			var fr=this.finishedRows;
-			path.setState('fillStyle', this.finishedRowsAnimation%2==1 ? 'rgba(255,0,0,0.5)' : 'rgba(0,0,255,0.5)');
-			for(var i=0; i<fr.length; i++) {
-				path.
-					moveTo(2, fr[i]*s+2).
-					rect(this.cols*s-3, s-3);
+			var color=this.finishedRowsAnimation%2==1 ? 'rgba(255,0,0,0.5)' : 'rgba(0,0,255,0.5)';
+			
+			for(var i=0, j; i<fr.length; i++) {
+				for(j=0; j<this.cols; j++) {
+					this.renderBox(j, fr[i], color, this.canvas);
+				}
 			}
 			
 			this.finishedRowsAnimation++;
 		}
+	},
+	/**
+	 * Renders a single box.
+	 * 
+	 * @return void
+	 * @param integer x position of the box
+	 * @param integer y position of the box
+	 * @param string the color to use
+	 * @param Curly.Canvas the canvas context
+	 */
+	renderBox: function(x, y, color, canvas) {
+		var s=this.size;
+		var xs=x*s, ys=y*s;
 		
-		path.draw(true, false);
+		var path=canvas.statefulPath(xs, ys);
+		path.setState('fillStyle', color).
+			rect(s, s).
+		// left light
+			moveTo(xs, ys).
+			setState('alpha', 0.6).
+			setState('fillStyle', 'white').
+			rect(1, s).
+		// top light
+			moveTo(xs, ys).
+			rect(s, 1).
+		// right shadow
+			moveTo(xs+s-1, ys).
+			setState('alpha', 0.6).
+			setState('fillStyle', 'black').
+			rect(1, s).
+		// bottom shadow
+			moveTo(xs, ys+s-1).
+			rect(s, 1).
+		// draw
+			draw(true, false);
+		canvas.overwriteState(Curly.Canvas.State.DEFAULTS);
 	},
 	/**
 	 * Creates a new random tetris box element.
@@ -552,6 +550,7 @@ Curly.extendClass(Tetris, Object, {
 		var el=Math.floor(Math.random()*this.elCtrs.length);
 		var c=Math.floor(Math.random()*this.colors.length);
 		el=new this.elCtrs[el]();
+		el.game=this;
 		el.color=this.colors[c];
 		console.log('create el: '+el.name+' '+c);
 		return el;

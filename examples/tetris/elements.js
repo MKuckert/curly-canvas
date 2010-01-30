@@ -15,6 +15,10 @@ Tetris.ElementBase=function(color) {
 };
 Curly.extendClass(Tetris.ElementBase, Object, {
 	/**
+	 * @var Tetris A reference to the game
+	 */
+	game: null,
+	/**
 	 * @var Array An 2D array with all boxes of this element
 	 */
 	boxes: null,
@@ -58,8 +62,7 @@ Curly.extendClass(Tetris.ElementBase, Object, {
 			}
 		}
 		
-		this.boxes=newBoxes;
-		this.afterRotate();
+		this.afterRotate(newBoxes);
 	},
 	/**
 	 * Rotates this element anti clockwise.
@@ -77,11 +80,10 @@ Curly.extendClass(Tetris.ElementBase, Object, {
 			}
 		}
 		
-		this.boxes=newBoxes;
-		this.afterRotate();
+		this.afterRotate(newBoxes);
 	},
 	// private
-	afterRotate: function() {
+	afterRotate: function(boxes) {
 		var dif=(this.h-this.w)/2;
 		if(this.h>this.w) {
 			dif=Math.ceil(dif);
@@ -90,12 +92,16 @@ Curly.extendClass(Tetris.ElementBase, Object, {
 			dif=Math.floor(dif);
 		}
 		
-		var tmp=this.w;
-		this.w=this.h;
-		this.h=tmp;
+		var el={};
+		el.w=this.h;
+		el.h=this.w;
+		el.x=this.x-dif;
+		el.y=this.y+dif;
+		el.boxes=boxes;
 		
-		this.x-=dif;
-		this.y+=dif;
+		if(!this.game.checkCollision(el)) {
+			Curly.extend(this, el);
+		}
 	}
 });
 
