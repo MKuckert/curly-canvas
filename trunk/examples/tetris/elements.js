@@ -1,4 +1,4 @@
-// Copyright 2009, Martin Kuckert
+// Copyright 2009-10, Martin Kuckert
 // Note: This software is NOT (yet) open source!
 
 (function() {

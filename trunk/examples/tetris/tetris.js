@@ -1,4 +1,4 @@
-// Copyright 2009, Martin Kuckert
+// Copyright 2009-10, Martin Kuckert
 // Note: This software is NOT (yet) open source!
 
 // simulate firebug
@@ -23,6 +23,10 @@ var Tetris=function(canvasElement, config) {
 	
 	Curly.extend(this, config||{});
 	
+	this.eventListener={};
+	this.eventListener[Tetris.EVENT_ELEMENT_CREATED]=[];
+	this.eventListener[Tetris.EVENT_ROW_FINISHED]=[];
+	
 	this.init();
 };
 Curly.extendClass(Tetris, Object, {
@@ -45,7 +49,7 @@ Curly.extendClass(Tetris, Object, {
 	/**
 	 * @var Integer speed The current game speed.
 	 */
-	speed: 2,
+	speed: 20,
 	/**
 	 * @var Array boxes An array of an array of all the tetris boxes
 	 */
@@ -87,6 +91,10 @@ Curly.extendClass(Tetris, Object, {
 	 */
 	finishedRowsAnimation: 0,
 	/**
+	 * @var Object eventListener An object of arrays with all event listeners
+	 */
+	eventListener: null,
+	/**
 	 * Starts the main loop of the game.
 	 * 
 	 * @return void
@@ -95,7 +103,7 @@ Curly.extendClass(Tetris, Object, {
 		var self=this;
 		this.timer=	window.setInterval(function() {
 			self.loop();
-		}, 1000/this.speed);
+		}, 10000/this.speed);
 	},
 	/**
 	 * Stops the main loop of the game.
@@ -105,6 +113,58 @@ Curly.extendClass(Tetris, Object, {
 	stop: function() {
 		window.clearInterval(this.timer);
 		this.timer=null;
+	},
+	/**
+	 * Adds an event listener to this instance.
+	 * 
+	 * @return void
+	 * @param string Name of the event
+	 * @param function Event handler
+	 */
+	addEventListener: function(event, handler) {
+		if(!this.eventListener[event]) {
+			throw new ReferenceError('The event '+event+' does not exist');
+		}
+		this.eventListener[event].push(handler);
+	},
+	/**
+	 * Removes a previously added event listener from this instance.
+	 * 
+	 * @return void
+	 * @param string Name of the event
+	 * @param function Event handler
+	 */
+	removeEventListener: function(event, handler) {
+		if(!this.eventListener[event]) {
+			throw new ReferenceError('The event '+event+' does not exist');
+		}
+		
+		var l=this.eventListener[event];
+		for(var i in l) {
+			if(l[i]===handler) {
+				l.splice(i, 1);
+				return;
+			}
+		}
+	},
+	/**
+	 * Fires the given event with the given arguments.
+	 * 
+	 * @return void
+	 * @param string Name of the event
+	 * @param Object Event object
+	 */
+	fireEvent: function(event, obj) {
+		if(!this.eventListener[event]) {
+			throw new ReferenceError('The event '+event+' does not exist');
+		}
+		
+		obj.game=this;
+		
+		var l=this.eventListener[event];
+		for(var i=0; i<l.length; i++) {
+			l[i](obj);
+		}
 	},
 	/**
 	 * Initializes the game.
@@ -166,6 +226,9 @@ Curly.extendClass(Tetris, Object, {
 					if(this.checkCollision(el)) {
 						el.x++;
 					}
+					else {
+						this.render();
+					}
 				}
 				break;
 			case 68:
@@ -175,10 +238,15 @@ Curly.extendClass(Tetris, Object, {
 					if(this.checkCollision(el)) {
 						el.x--;
 					}
+					else {
+						this.render();
+					}
 				}
 				break;
 			case 83:
 				this.moveDown=true;
+				this.stateMove();
+				this.render();
 				break;
 			case 77:
 				if(!this.curEl) {
@@ -355,6 +423,8 @@ Curly.extendClass(Tetris, Object, {
 		
 		if(finished.length>0) {
 			this.finishedRowsAnimation=1;
+			
+			this.fireEvent(Tetris.EVENT_ROW_FINISHED, {rows: finished.length});
 		}
 		
 		this.finishedRows=finished;
@@ -433,7 +503,7 @@ Curly.extendClass(Tetris, Object, {
 		
 		if(this.finishedRowsAnimation>0) {
 			var fr=this.finishedRows;
-			var color=this.finishedRowsAnimation%2==1 ? 'rgba(255,0,0,0.5)' : 'rgba(0,0,255,0.5)';
+			var color=this.finishedRowsAnimation%2==1 ? 'rgba(255,106,0,0.8)' : 'rgba(255,216,0,0.8)';
 			
 			for(var i=0, j; i<fr.length; i++) {
 				for(j=0; j<this.cols; j++) {
@@ -491,7 +561,9 @@ Curly.extendClass(Tetris, Object, {
 		el=new this.elCtrs[el]();
 		el.game=this;
 		el.color=this.colors[c];
-		console.log('create el: '+el.name+' '+c);
+		
+		this.fireEvent(Tetris.EVENT_ELEMENT_CREATED, {element: el});
+		
 		return el;
 	}
 });
@@ -499,3 +571,6 @@ Curly.extendClass(Tetris, Object, {
 Tetris.LOOPSTATE_INIT=0;
 Tetris.LOOPSTATE_MOVE=1;
 Tetris.LOOPSTATES=2;
+
+Tetris.EVENT_ELEMENT_CREATED='elementCreated';
+Tetris.EVENT_ROW_FINISHED='rowFinished';

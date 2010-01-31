@@ -9,31 +9,62 @@
 		<script type="text/javascript" src="tetris.js"></script>
 		<script type="text/javascript" src="elements.js"></script>
 		<style type="text/css">
-#c {
+label {
+	width: 100px;
+	display: block;
 	float: left;
-	border: 1px solid grey;
+	clear: left;
 }
-#dump {
+input {
+	display: block;
 	float: left;
-	height: 240px;
-	margin-left: 5px;
-	width: 200px;
-	font-family: monospace;
-	border: 1px solid grey;
-	white-space: pre;
+}
+input#submit {
+	clear: left;
+	margin-left: 210px;
 }
 		</style>
 	</head>
 	<body>
 		<p>Use A, S, D to move the element. Rotate the element with m or n.</p>
-		<canvas id="c" width="160" height="240"></canvas>
-		<div id="dump"></div>
-		<button onclick="game.stop()">stop</button>
-		<button onclick="game.run()">run</button>
+		<form onsubmit="startGame();return false;">
+			<label for="tb_rows">Rows</label>
+			<input id="tb_rows" type="text" value="12" />
+			
+			<label for="tb_cols">Columns</label>
+			<input id="tb_cols" type="text" value="8" />
+			
+			<label for="tb_speed">Speed</label>
+			<input id="tb_speed" type="text" value="20" />
+			
+			<label for="tb_size">Box size</label>
+			<input id="tb_size" type="text" value="20" />
+			
+			<label for="tb_colors">Colors</label>
+			<input id="tb_colors" type="text" value="red; blue; green" />
+			
+			<input id="submit" type="submit" value="start" />
+		</form>
 		<script type="text/javascript">//<![CDATA[
 var game;
-window.onload = function() {
-	game=new Tetris('c');
+function startGame() {
+	var configs={
+		rows: parseInt(document.getElementById('tb_rows').value) || 12,
+		cols: parseInt(document.getElementById('tb_cols').value) || 8,
+		speed: parseInt(document.getElementById('tb_speed').value) || 20,
+		size: parseInt(document.getElementById('tb_size').value) || 20,
+		colors: document.getElementById('tb_colors').value.replace(/\s/g, '').split(';')
+	};
+	
+	var form=document.getElementsByTagName('form')[0];
+	form.parentNode.removeChild(form);
+	
+	var canvas=document.createElement('canvas');
+	canvas.width=configs.size*configs.cols;
+	canvas.height=configs.size*configs.rows;
+	document.getElementsByTagName('body')[0].appendChild(canvas);
+	
+	game=new Tetris(canvas, configs);
 	game.run();
 }
 //		]]></script>
